@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32002.185
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudoItApi", "SudoItApi\SudoItApi.csproj", "{0FFCBA2E-BA60-4FE4-9C07-245A76AF8F1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0FFCBA2E-BA60-4FE4-9C07-245A76AF8F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FFCBA2E-BA60-4FE4-9C07-245A76AF8F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FFCBA2E-BA60-4FE4-9C07-245A76AF8F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FFCBA2E-BA60-4FE4-9C07-245A76AF8F1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6A59F802-A738-478D-8F7E-E601C9D584DD}
+	EndGlobalSection
+EndGlobal
