@@ -37,7 +37,7 @@ namespace SudoItApi.Controllers
                 string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
                 Log.SaveLog(ip + " execated \""+Command+"\"");
                 string result = Cmd.RunCmd(Command);
-                return "{\"status\":\"Done\",\"msg\":\"" + result + "\"}";
+                return result;
             }
             else
             {

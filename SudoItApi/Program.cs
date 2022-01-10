@@ -10,6 +10,7 @@ namespace SudoItApi
         {
             Console.WriteLine("正在初始化应用程序...");
             Initializater.Initializate();
+            Console.WriteLine("尝试运行主程序模块...\n\n");
             CreateHostBuilder(args).Build().Run();
         }
 
