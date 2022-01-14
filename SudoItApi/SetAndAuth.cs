@@ -6,8 +6,7 @@ namespace SudoItApi
     {
         public static bool Auth(string Password)
         {
-            string RealPassword = File.ReadAllText(@"./Password.txt");
-            if (Password == RealPassword)
+            if( File.ReadAllText(@"./Password.txt")==Password)
             {
                 return true;
             }
