@@ -5,6 +5,10 @@ namespace SudoItApi
 {
     public class Log
     {
+        /// <summary>
+        /// 存储日志
+        /// </summary>
+        /// <param name="message">日志信息</param>
         public static void SaveLog(string message)
         {
             message = DateTime.Now.ToString() + " " + message;

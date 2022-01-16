@@ -1,260 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
 
 namespace SudoItApi.Controllers
 {
-    #region 内存使用率模块
-    public class GetRAMUsage
-    {
-        public string GetCPUUsage()
-        {
-            PerformanceCounter cpuCounter;
-            //PerformanceCounter ramCounter;
-            cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-            //ramCounter = new PerformanceCounter("Memory", "Available MBytes");
-            //PerformanceCounter diskCounter = new PerformanceCounter("PhysicalDisk", "Disk Read Bytes/sec", "_Total");
-            return cpuCounter.NextValue() + "%";
-        }
-        public string FullRAM;
-        public string UsedRAM;
-        public string FreeRAM;
-        public void Get()
-        {
-            FullRAM = FormatSize(GetTotalPhys());
-            UsedRAM = FormatSize(GetUsedPhys());
-            FreeRAM = FormatSize(GetAvailPhys());
-        }
-
-        #region 获得内存信息API
-        [DllImport("kernel32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GlobalMemoryStatusEx(ref MEMORY_INFO mi);
-
-        //定义内存的信息结构
-        [StructLayout(LayoutKind.Sequential)]
-        public struct MEMORY_INFO
-        {
-            public uint dwLength; //当前结构体大小
-            public uint dwMemoryLoad; //当前内存使用率
-            public ulong ullTotalPhys; //总计物理内存大小
-            public ulong ullAvailPhys; //可用物理内存大小
-            public ulong ullTotalPageFile; //总计交换文件大小
-            public ulong ullAvailPageFile; //总计交换文件大小
-            public ulong ullTotalVirtual; //总计虚拟内存大小
-            public ulong ullAvailVirtual; //可用虚拟内存大小
-            public ulong ullAvailExtendedVirtual; //保留 这个值始终为0
-        }
-        #endregion
-
-        #region 格式化容量大小
-        /// <summary>
-        /// 格式化容量大小
-        /// </summary>
-        /// <param name="size">容量（B）</param>
-        /// <returns>已格式化的容量</returns>
-        private static string FormatSize(double size)
-        {
-            double d = (double)size;
-            int i = 0;
-            while ((d > 1024) && (i < 5))
-            {
-                d /= 1024;
-                i++;
-            }
-            string[] unit = { "B", "KB", "MB", "GB", "TB" };
-            return (string.Format("{0} {1}", Math.Round(d, 2), unit[i]));
-        }
-        #endregion
-
-        #region 获得当前内存使用情况
-        /// <summary>
-        /// 获得当前内存使用情况
-        /// </summary>
-        /// <returns></returns>
-        public static MEMORY_INFO GetMemoryStatus()
-        {
-            MEMORY_INFO mi = new MEMORY_INFO();
-            mi.dwLength = (uint)System.Runtime.InteropServices.Marshal.SizeOf(mi);
-            GlobalMemoryStatusEx(ref mi);
-            return mi;
-        }
-        #endregion
-
-        #region 获得当前可用物理内存大小
-        /// <summary>
-        /// 获得当前可用物理内存大小
-        /// </summary>
-        /// <returns>当前可用物理内存（B）</returns>
-        public static ulong GetAvailPhys()
-        {
-            MEMORY_INFO mi = GetMemoryStatus();
-            return mi.ullAvailPhys;
-        }
-        #endregion
-
-        #region 获得当前已使用的内存大小
-        /// <summary>
-        /// 获得当前已使用的内存大小
-        /// </summary>
-        /// <returns>已使用的内存大小（B）</returns>
-        public static ulong GetUsedPhys()
-        {
-            MEMORY_INFO mi = GetMemoryStatus();
-            return (mi.ullTotalPhys - mi.ullAvailPhys);
-        }
-        #endregion
-
-        #region 获得当前总计物理内存大小
-        /// <summary>
-        /// 获得当前总计物理内存大小
-        /// </summary>
-        /// <returns&amp;gt;总计物理内存大小（B）&amp;lt;/returns&amp;gt;
-        public static ulong GetTotalPhys()
-        {
-            MEMORY_INFO mi = GetMemoryStatus();
-            return mi.ullTotalPhys;
-        }
-        #endregion
-    }
-    #endregion
-    #region 状态机
-    /// <summary>
-    /// 服务端状态反馈器
-    /// </summary>
-    [ApiController]
-    [Route("SudoIt/[controller]/[action]")]
-    public class ServiceController : ControllerBase
-    {
-        /// <summary>
-        /// 测试服务端连通性
-        /// </summary>
-        /// <returns>词典</returns>
-        [HttpGet]
-        public ActionResult<string> Test()
-        {
-            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            Log.SaveLog(ip + " got your server status.");
-            return "{\"status\":\"服务在线\"}";
-        }
-        /// <summary>
-        /// 获取操作系统,机器名称,架构,用户名,内存使用量,CPU使用率等信息
-        /// </summary>
-        /// <param name="Password">密码</param>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult<string> Status(string Password)
-        {
-            if (!SetAndAuth.Auth(Password))
-            {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " 尝试获取本机信息 ,但是他/她输入了错误的密码");
-                HttpContext.Response.StatusCode = 403;
-                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
-            }
-            string MacName = Environment.MachineName;
-            string OSName = "";
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD)) OSName = "FreeBSD";
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) OSName = "Linux";
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) OSName = "MacOS";
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) OSName = "Windows";
-            if (OSName == "") OSName = "Unknown";
-            string OSBit = "32Bit";
-            if (Environment.Is64BitOperatingSystem) OSBit = "64Bit";
-            string UserName = Environment.UserName;
-            GetRAMUsage getRAMUsage = new GetRAMUsage();
-            getRAMUsage.Get();
-            string CPUUsage = getRAMUsage.GetCPUUsage();
-            string info = "{\n\"MacName\":\"" + MacName + "\",\n\"OS\":\"" + OSName + "\",\n\"OSBit\":\"" + OSBit + "\",\n\"UserName\":\"" + UserName + "\",\n\"FreeRAM\":\"" + getRAMUsage.FreeRAM + "\",\n\"CPUUsage\":\"" + CPUUsage.ToString() + "\"\n}";
-            return info;
-        }
-    }
-    #endregion
-    #region 命令系统
-    /// <summary>
-    /// 服务器命令控制器
-    /// </summary>
-    [ApiController]
-    [Route("SudoIt/[controller]/[action]")]
-    public class CommandController : ControllerBase
-    {
-        /// <summary>
-        /// 执行命令并获取返回值
-        /// </summary>
-        /// <param name="Command">命令文本</param>
-        /// <param name="Password">密码</param>
-        /// <returns>词典(结果或错误)</returns>
-        [HttpGet]
-        public ActionResult<string> ExecuteCommand(string Command, string Password)
-        {
-            if (SetAndAuth.Auth(Password))
-            {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " execated \"" + Command + "\"");
-                string result = Cmd.RunCmd(Command, true);
-                return result;
-            }
-            else
-            {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " 尝试执行命令 \"" + Command + "\" ,但是他/她输入了错误的密码");
-                HttpContext.Response.StatusCode = 403;
-                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
-            }
-        }
-        /// <summary>
-        /// 执行命令(不等待返回值)
-        /// </summary>
-        /// <param name="Command">命令文本</param>
-        /// <param name="Password">密码</param>
-        /// <returns>词典(成功或错误)</returns>
-        [HttpGet]
-        public ActionResult<string> SafeExecute(string Command, string Password)
-        {
-            if (SetAndAuth.Auth(Password))
-            {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " SafeExecated \"" + Command + "\"");
-                Cmd.RunCmd(Command, false);
-                return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
-            }
-            else
-            {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " 尝试执行命令 \"" + Command + "\" ,但是他/她输入了错误的密码");
-                HttpContext.Response.StatusCode = 403;
-                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
-            }
-        }
-        /// <summary>
-        /// 延时执行命令(不等待返回值)
-        /// </summary>
-        /// <param name="Command">命令文本</param>
-        /// <param name="Password">密码</param>
-        /// <param name="DelayTime">延时时长(毫秒)</param>
-        /// <returns>词典(成功或错误)</returns>
-        [HttpGet]
-        public ActionResult<string> TimeDelayExecute(string Command, string Password, string DelayTime)
-        {
-            if (SetAndAuth.Auth(Password))
-            {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " SafeExecated \"" + Command + "\"");
-                Cmd.DelayRunCmd(Command, Convert.ToInt32(DelayTime));
-                return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
-            }
-            else
-            {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " 尝试执行命令 \"" + Command + "\" ,但是他/她输入了错误的密码");
-                HttpContext.Response.StatusCode = 403;
-                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
-            }
-        }
-    }
-    #endregion
     #region 文件系统
     /// <summary>
     /// 文件系统控制器
@@ -576,12 +325,41 @@ namespace SudoItApi.Controllers
             {
                 Log.SaveLog(ip + " 下载了以下路径的文件:" + Path);
                 var stream = System.IO.File.OpenRead(Path);  //创建文件流
-                return File(stream, "multipart/form-data",Path.Split("\\")[^1].Split("/")[^1]);
+                return File(stream, "multipart/form-data", Path.Split("\\")[^1].Split("/")[^1]);
             }
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的下载文件请求时发生了异常:" + ex.ToString());
                 return Content("{\"status\":\"Error\",\"msg\":\"无法下载该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}");
+            }
+        }
+        /// <summary>
+        /// 重命名文件
+        /// </summary>
+        /// <param name="Path">文件路径</param>
+        /// <param name="Password">密码</param>
+        /// <param name="Name">新文件名</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult<string> RenameFile(string Path, string Password, string Name)
+        {
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            if (!SetAndAuth.Auth(Password))
+            {
+                Log.SaveLog(ip + " 尝试重命名该路径的文件: \"" + Path + "\" ,但是他/她输入了错误的密码");
+                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
+            }
+            try
+            {
+                Log.SaveLog(ip + " 重命名了以下路径的文件:" + Path);
+                string Dir = System.IO.Path.GetDirectoryName(Path);
+                System.IO.File.Move(Path, Dir + "\\" + Name);
+                return "{\"status\":\"Success.\"}";
+            }
+            catch (Exception ex)
+            {
+                Log.SaveLog("在处理位于" + ip + "的重命名文件请求时发生了异常:" + ex.ToString());
+                return "{\"status\":\"Error\",\"msg\":\"无法重命名该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
             }
         }
         #endregion
@@ -784,6 +562,35 @@ namespace SudoItApi.Controllers
                 string name = Path.GetFileName(folder);
                 string dest = Path.Combine(destFolder, name);
                 CopyFolder(folder, dest);//构建目标路径,递归复制文件
+            }
+        }
+        /// <summary>
+        /// 重命名文件夹
+        /// </summary>
+        /// <param name="Path">文件路径</param>
+        /// <param name="Password">密码</param>
+        /// <param name="Name">新文件名</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult<string> RenameDir(string Path, string Password, string Name)
+        {
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            if (!SetAndAuth.Auth(Password))
+            {
+                Log.SaveLog(ip + " 尝试重命名该路径的文件夹: \"" + Path + "\" ,但是他/她输入了错误的密码");
+                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
+            }
+            try
+            {
+                Log.SaveLog(ip + " 重命名了以下路径的文件夹:" + Path);
+                string Dir = System.IO.Path.GetDirectoryName(Path);
+                Directory.Move(Path, Dir + "\\" + Name);
+                return "{\"status\":\"Success.\"}";
+            }
+            catch (Exception ex)
+            {
+                Log.SaveLog("在处理位于" + ip + "的重命名文件夹请求时发生了异常:" + ex.ToString());
+                return "{\"status\":\"Error\",\"msg\":\"无法重命名该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
             }
         }
     }

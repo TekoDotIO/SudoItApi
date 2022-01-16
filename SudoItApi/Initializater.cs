@@ -5,6 +5,9 @@ namespace SudoItApi
 {
     public class Initializater
     {
+        /// <summary>
+        /// ≥ı ºªØ
+        /// </summary>
         public static void Initializate()
         {
             Console.ForegroundColor = ConsoleColor.Green;
