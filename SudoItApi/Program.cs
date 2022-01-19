@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IO;
 
 namespace SudoItApi
 {
@@ -14,8 +15,15 @@ namespace SudoItApi
         {
             Console.WriteLine("正在初始化应用程序...");
             Initializater.Initializate();
-            Console.WriteLine("尝试运行主程序模块...\n\n");
-            CreateHostBuilder(args).Build().Run();
+            Console.WriteLine("尝试运行主程序模块...");
+            Console.WriteLine("从本地读取端口文件...");
+            int Port = Convert.ToInt32(File.ReadAllText(@"./Port.txt"));
+            Console.WriteLine("应用程序将运行在: *:" + Port);
+            Log.SaveLog("应用程序端口号被设定为" + Port);
+            string[] PortArg = new string[] { "--urls", "http://*:" + Port };
+            Log.SaveLog("正在部署主程序...");
+            CreateHostBuilder(PortArg).Build().Run();
+            //CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

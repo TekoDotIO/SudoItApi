@@ -12,6 +12,42 @@ namespace SudoItApi.Controllers
     [Route("SudoIt/[controller]/[action]")]
     public class FileSystemController : ControllerBase
     {
+        #region GET部分
+        #region 获取所有磁盘
+        /// <summary>
+        /// 获取所有磁盘
+        /// </summary>
+        /// <param name="Password">密码</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult<string> GetDrives(string Password)
+        {
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            if (!SetAndAuth.Auth(Password))
+            {
+                Log.SaveLog(ip + " 尝试获取所有磁盘 ,但是他/她输入了错误的密码");
+                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
+            }
+            try
+            {
+                Log.SaveLog(ip + " 获取了磁盘信息");
+                string[] DiskInfo = Directory.GetLogicalDrives();
+                string Dictionary = "[";
+                foreach (string Disk in DiskInfo)
+                {
+                    Dictionary = Dictionary + "\n\"" + Disk.Replace("\\","/") + "\",";
+                }
+                Dictionary = Dictionary[0..^1];
+                Dictionary += "\n]";
+                return Dictionary;
+            }
+            catch (Exception ex)
+            {
+                Log.SaveLog("在处理位于" + ip + "的获取磁盘请求时发生了异常:" + ex.ToString());
+                return "{\"status\":\"Error\",\"msg\":\"无法获取磁盘.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+            }
+        }
+        #endregion
         #region 文件列表模块
         /// <summary>
         /// 获取文件列表
@@ -533,7 +569,6 @@ namespace SudoItApi.Controllers
                 return "{\"status\":\"Error\",\"msg\":\"无法压缩该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
             }
         }
-        #endregion
         /// <summary>
         /// 复制文件夹及文件
         /// </summary>
@@ -593,6 +628,23 @@ namespace SudoItApi.Controllers
                 return "{\"status\":\"Error\",\"msg\":\"无法重命名该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
             }
         }
+        #endregion
+        #endregion
+        #region POST部分
+        #region 获取所有磁盘
+        /// <summary>
+        /// 以POST方式获取磁盘
+        /// </summary>
+        /// <param name="Data">包含密码的词典</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<string> PostGetDrives(dynamic Data)
+        {
+            string Password = Data.Password;
+            return GetDrives(Password);
+        }
+        #endregion
+        #endregion
     }
     #endregion
 }

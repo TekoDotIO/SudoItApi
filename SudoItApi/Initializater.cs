@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Net;
+using System.Net.NetworkInformation;
 
 namespace SudoItApi
 {
@@ -32,6 +34,28 @@ namespace SudoItApi
                 File.Create(@"./Password.txt").Close();
                 File.WriteAllText(@"./Password.txt", Password);
                 Console.Clear();
+                Console.WriteLine("第三步");
+                Console.WriteLine("设置运行端口");
+                Console.WriteLine("\n\nSudoIt需要您设置一个运行端口以在网络中访问.\n请注意:您的端口号应该是一个0~65535之间的正整数,例如\"5000\"");
+                Console.WriteLine("我们强烈建议您使用5000作为运行端口号,因为SudoIt的默认设置将5000作为正常端口");
+                Console.WriteLine("请设置你的运行端口并按下回车:");
+                string Port = Console.ReadLine();
+                PortHelper portHelper = new PortHelper();
+                if (portHelper.portInUse(Convert.ToInt32(Port), PortType.TCP))
+                {
+                    Console.WriteLine("初始化失败:该端口已被占用\n请关闭占用端口的程序或更换端口后重试");
+                    Console.ReadKey();
+                    return;
+                }
+                if(Convert.ToInt32(Port)>65535||Convert.ToInt32(Port)<=0)
+                {
+                    Console.WriteLine("初始化失败:端口格式不正确\n您的端口号应该是一个0~65535之间的正整数,例如\"5000\"\n请重新初始化应用程序");
+                    Console.ReadKey();
+                    return;
+                }
+                File.Create(@"./Port.txt").Close();
+                File.WriteAllText(@"./Port.txt", Port);
+                Console.Clear();
                 File.Create(@"./deletemetoreset.each").Close();
             }
             if (!File.Exists(@"./Password.txt"))
@@ -44,8 +68,87 @@ namespace SudoItApi
                 File.WriteAllText(@"./Password.txt", Password);
                 Console.Clear();
             }
+            if (!File.Exists(@"./Port.txt"))
+            {
+                Console.WriteLine("设置运行端口");
+                Console.WriteLine("\n\nSudoIt需要您设置一个运行端口以在网络中访问.\n请注意:您的端口号应该是一个0~65535之间的正整数,例如\"5000\"");
+                Console.WriteLine("我们强烈建议您使用5000作为运行端口号,因为SudoIt的默认设置将5000作为正常端口");
+                Console.WriteLine("请设置你的运行端口并按下回车:");
+                string Port = Console.ReadLine();
+                PortHelper portHelper = new PortHelper();
+                if (portHelper.portInUse(Convert.ToInt32(Port), PortType.TCP))
+                {
+                    Console.WriteLine("初始化失败:该端口已被占用\n请关闭占用端口的程序或更换端口后重试");
+                    Console.ReadKey();
+                    return;
+                }
+                if (Convert.ToInt32(Port) > 65535 || Convert.ToInt32(Port) <= 0)
+                {
+                    Console.WriteLine("初始化失败:端口格式不正确\n您的端口号应该是一个0~65535之间的正整数,例如\"5000\"\n请重新初始化应用程序");
+                    Console.ReadKey();
+                    return;
+                }
+                File.Create(@"./Port.txt").Close();
+                File.WriteAllText(@"./Port.txt", Port);
+                Console.Clear();
+            }
             Console.WriteLine("初始化成功");
-            Log.SaveLog("Initializate succeed.");
+            Log.SaveLog("初始化已完成");
         }
     }
+    class PortHelper
+    {
+
+        #region 指定类型的端口是否已经被使用了
+        /// <summary>
+        /// 指定类型的端口是否已经被使用了
+        /// </summary>
+        /// <param name="port">端口号</param>
+        /// <param name="type">端口类型</param>
+        /// <returns></returns>
+        public bool portInUse(int port, PortType type)
+        {
+            bool flag = false;
+            IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
+            IPEndPoint[] ipendpoints = null;
+            if (type == PortType.TCP)
+            {
+                ipendpoints = properties.GetActiveTcpListeners();
+            }
+            else
+            {
+                ipendpoints = properties.GetActiveUdpListeners();
+            }
+            foreach (IPEndPoint ipendpoint in ipendpoints)
+            {
+                if (ipendpoint.Port == port)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            ipendpoints = null;
+            properties = null;
+            return flag;
+        }
+        #endregion
+
+    }
+
+    #region 端口枚举类型
+    /// <summary>
+    /// 端口类型
+    /// </summary>
+    enum PortType
+    {
+        /// <summary>
+        /// TCP类型
+        /// </summary>
+        TCP,
+        /// <summary>
+        /// UDP类型
+        /// </summary>
+        UDP
+    }
+    #endregion
 }

@@ -146,10 +146,10 @@ namespace SudoItApi.Controllers
         [HttpGet]
         public ActionResult<string> Status(string Password)
         {
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            Log.SaveLog(ip + " 尝试获取本机信息 ,但是他/她输入了错误的密码");
             if (!SetAndAuth.Auth(Password))
             {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " 尝试获取本机信息 ,但是他/她输入了错误的密码");
                 HttpContext.Response.StatusCode = 403;
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
             }
@@ -167,6 +167,7 @@ namespace SudoItApi.Controllers
             getRAMUsage.Get();
             string CPUUsage = getRAMUsage.GetCPUUsage();
             string info = "{\n\"MacName\":\"" + MacName + "\",\n\"OS\":\"" + OSName + "\",\n\"OSBit\":\"" + OSBit + "\",\n\"UserName\":\"" + UserName + "\",\n\"FreeRAM\":\"" + getRAMUsage.FreeRAM + "\",\n\"CPUUsage\":\"" + CPUUsage.ToString() + "\"\n}";
+            Log.SaveLog(ip + "获取了设备信息");
             return info;
         }
     }
