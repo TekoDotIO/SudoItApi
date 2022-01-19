@@ -638,10 +638,20 @@ namespace SudoItApi.Controllers
         /// <param name="Data">包含密码的词典</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<string> PostGetDrives(dynamic Data)
+        public ActionResult<string> PostGetDrives([FromBody] Json obj)
         {
-            string Password = Data.Password;
+            string Password = obj.Password;
             return GetDrives(Password);
+        }
+        [HttpPost]
+        public ActionResult<string> PostGetList([FromBody] Json obj)
+        {
+            return GetList(obj.Path, obj.Password);
+        }
+        public class Json
+        {
+            public string Password { get; set; }
+            public string Path { get; set; }
         }
         #endregion
         #endregion

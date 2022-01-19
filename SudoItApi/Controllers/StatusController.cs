@@ -135,7 +135,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> Test()
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            Log.SaveLog(ip + " got your server status.");
+            Log.SaveLog(ip + " 测试了服务连通性");
             return "{\"status\":\"服务在线\"}";
         }
         /// <summary>
