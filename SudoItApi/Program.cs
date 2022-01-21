@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Hosting;
+ï»¿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
@@ -8,19 +8,19 @@ namespace SudoItApi
     public class Program
     {
         /// <summary>
-        /// Ó¦ÓÃ³ÌĞòµÄÖ÷Èë¿Úµã
+        /// åº”ç”¨ç¨‹åºçš„ä¸»å…¥å£ç‚¹
         /// </summary>
-        /// <param name="args">¿ØÖÆÌ¨Ö´ĞĞ²ÎÊı</param>
+        /// <param name="args">æ§åˆ¶å°æ‰§è¡Œå‚æ•°</param>
         public static void Main(string[] args)
         {
-            Console.WriteLine("ÕıÔÚ³õÊ¼»¯Ó¦ÓÃ³ÌĞò...");
+            Console.WriteLine("æ­£åœ¨åˆå§‹åŒ–åº”ç”¨ç¨‹åº...");
             Initializater.Initializate();
-            Console.WriteLine("´Ó±¾µØ¶ÁÈ¡¶Ë¿ÚÎÄ¼ş...");
+            Console.WriteLine("ä»æœ¬åœ°è¯»å–ç«¯å£æ–‡ä»¶...");
             int Port = Convert.ToInt32(File.ReadAllText(@"./Port.txt"));
-            Console.WriteLine("Ó¦ÓÃ³ÌĞò½«ÔËĞĞÔÚ: *:" + Port);
-            Log.SaveLog("Ó¦ÓÃ³ÌĞò¶Ë¿ÚºÅ±»Éè¶¨Îª" + Port);
+            Console.WriteLine("åº”ç”¨ç¨‹åºå°†è¿è¡Œåœ¨: *:" + Port);
+            Log.SaveLog("åº”ç”¨ç¨‹åºç«¯å£å·è¢«è®¾å®šä¸º" + Port);
             string[] PortArg = new string[] { "--urls", "http://*:" + Port };
-            Console.WriteLine("³¢ÊÔÔËĞĞÖ÷³ÌĞòÄ£¿é...");
+            Console.WriteLine("å°è¯•è¿è¡Œä¸»ç¨‹åºæ¨¡å—...");
             CreateHostBuilder(PortArg).Build().Run();
             //CreateHostBuilder(args).Build().Run();
         }

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -8,7 +8,7 @@ namespace SudoItApi
     public class Initializater
     {
         /// <summary>
-        /// ³õÊ¼»¯
+        /// åˆå§‹åŒ–
         /// </summary>
         public static void Initializate()
         {
@@ -16,40 +16,40 @@ namespace SudoItApi
             if (!File.Exists(@"./deletemetoreset.each"))
             {
                 Console.Clear();
-                Console.WriteLine("»¶Ó­Ê¹ÓÃSudoIt!ÏµÍ³¼ì²âµ½ÄãÊÇµÚÒ»´ÎÔËĞĞSudoIt(»òÕßÄã°Ñ³ÌĞòµÄ¼ÇÒäÎÄ¼ş³ÔµôÁËhh),Òò´Ë,ÄãĞèÒªÍê³É¼¸¸ö¼òµ¥µÄ²½Öè,ÔÚÕâÖ®ºóÄã²Å¿ÉÒÔ¾¡ÇéÏíÊÜSudoIt!");
-                Console.WriteLine("°´»Ø³µ¼ü¼ÌĞø");
+                Console.WriteLine("æ¬¢è¿ä½¿ç”¨SudoIt!ç³»ç»Ÿæ£€æµ‹åˆ°ä½ æ˜¯ç¬¬ä¸€æ¬¡è¿è¡ŒSudoIt(æˆ–è€…ä½ æŠŠç¨‹åºçš„è®°å¿†æ–‡ä»¶åƒæ‰äº†hh),å› æ­¤,ä½ éœ€è¦å®Œæˆå‡ ä¸ªç®€å•çš„æ­¥éª¤,åœ¨è¿™ä¹‹åä½ æ‰å¯ä»¥å°½æƒ…äº«å—SudoIt!");
+                Console.WriteLine("æŒ‰å›è½¦é”®ç»§ç»­");
                 Console.ReadKey();
                 Console.Clear();
-                Console.WriteLine("µÚÒ»²½");
-                Console.WriteLine("ÓÃ»§ÒşË½ÉùÃ÷");
-                Console.WriteLine("\n\nÏà»¥¿Æ¼¼¸ß¶ÈÖØÊÓ¶ÔÓÃ»§ĞÅÏ¢µÄ±£ÃÜ¹¤×÷,ÄúµÄ¸öÈËĞÅÏ¢Óë¸öÈËÎÄ¼şÔÚÄúÊ¹ÓÃ±¾³ÌĞòµÄÈÎºÎ²¿·Ö¶¼Ã»ÓĞ±»ÉÏ´«µ½ÈÎºÎµØ·½.±¾ÏîÄ¿ÔÚGitHubÒÔAGPLĞ­Òé¿ªÔ´,Äú¿ÉÒÔÇáËÉ²é¿´±¾³ÌĞòµÄÈÎºÎ´úÂë.µ«ÊÇÎªÁËÎ¬»¤³ÌĞòÎÈ¶¨ĞÔ,ÎÒÃÇ±ØĞë»ñÈ¡ÄúµÄÈÕÖ¾ĞÅÏ¢²¢½«ÆäÉÏ´«µ½Ïà»¥¿Æ¼¼·şÎñÆ÷.\nÈç¹ûÄú¼ÌĞøÊ¹ÓÃ±¾Èí¼ş,¼´±íÊ¾Í¬ÒâÉÏÊöĞÅÏ¢´«Êä²¢ÇÒÍ¬ÒâÏà»¥¿Æ¼¼×îĞÂ·¢²¼µÄÓÃ»§Ğ­Òé.");
-                Console.WriteLine("\nÈç¹ûÄúÀí½â²¢Í¬Òâ,Çë°´»Ø³µ¼ü¼ÌĞø.\nÈç¹ûÄú²»Í¬Òâ,ÇëÍË³ö³ÌĞò.");
+                Console.WriteLine("ç¬¬ä¸€æ­¥");
+                Console.WriteLine("ç”¨æˆ·éšç§å£°æ˜");
+                Console.WriteLine("\n\nç›¸äº’ç§‘æŠ€é«˜åº¦é‡è§†å¯¹ç”¨æˆ·ä¿¡æ¯çš„ä¿å¯†å·¥ä½œ,æ‚¨çš„ä¸ªäººä¿¡æ¯ä¸ä¸ªäººæ–‡ä»¶åœ¨æ‚¨ä½¿ç”¨æœ¬ç¨‹åºçš„ä»»ä½•éƒ¨åˆ†éƒ½æ²¡æœ‰è¢«ä¸Šä¼ åˆ°ä»»ä½•åœ°æ–¹.æœ¬é¡¹ç›®åœ¨GitHubä»¥AGPLåè®®å¼€æº,æ‚¨å¯ä»¥è½»æ¾æŸ¥çœ‹æœ¬ç¨‹åºçš„ä»»ä½•ä»£ç .ä½†æ˜¯ä¸ºäº†ç»´æŠ¤ç¨‹åºç¨³å®šæ€§,æˆ‘ä»¬å¿…é¡»è·å–æ‚¨çš„æ—¥å¿—ä¿¡æ¯å¹¶å°†å…¶ä¸Šä¼ åˆ°ç›¸äº’ç§‘æŠ€æœåŠ¡å™¨.\nå¦‚æœæ‚¨ç»§ç»­ä½¿ç”¨æœ¬è½¯ä»¶,å³è¡¨ç¤ºåŒæ„ä¸Šè¿°ä¿¡æ¯ä¼ è¾“å¹¶ä¸”åŒæ„ç›¸äº’ç§‘æŠ€æœ€æ–°å‘å¸ƒçš„ç”¨æˆ·åè®®.");
+                Console.WriteLine("\nå¦‚æœæ‚¨ç†è§£å¹¶åŒæ„,è¯·æŒ‰å›è½¦é”®ç»§ç»­.\nå¦‚æœæ‚¨ä¸åŒæ„,è¯·é€€å‡ºç¨‹åº.");
                 Console.ReadKey();
                 Console.Clear();
-                Console.WriteLine("µÚ¶ş²½");
-                Console.WriteLine("ÉèÖÃ¶ÀÁ¢ÃÜÂë");
-                Console.WriteLine("\n\nSudoItĞèÒªÄúÉèÖÃÒ»¸ö¶ÀÁ¢ÃÜÂëÒÔÇø·ÖÄúºÍËûÈË.\nÇë×¢Òâ:ÄúµÄÃÜÂëÓ¦¸Ã°üº¬´óĞ´×Ö·û,Ğ¡Ğ´×Ö·û,³ı?&/\\=µÈÖ®ÍâµÄÌØÊâ×Ö·û");
-                Console.WriteLine("ÇëÉèÖÃÄãµÄÃÜÂë²¢°´ÏÂ»Ø³µ:");
+                Console.WriteLine("ç¬¬äºŒæ­¥");
+                Console.WriteLine("è®¾ç½®ç‹¬ç«‹å¯†ç ");
+                Console.WriteLine("\n\nSudoItéœ€è¦æ‚¨è®¾ç½®ä¸€ä¸ªç‹¬ç«‹å¯†ç ä»¥åŒºåˆ†æ‚¨å’Œä»–äºº.\nè¯·æ³¨æ„:æ‚¨çš„å¯†ç åº”è¯¥åŒ…å«å¤§å†™å­—ç¬¦,å°å†™å­—ç¬¦,é™¤?&/\\=ç­‰ä¹‹å¤–çš„ç‰¹æ®Šå­—ç¬¦");
+                Console.WriteLine("è¯·è®¾ç½®ä½ çš„å¯†ç å¹¶æŒ‰ä¸‹å›è½¦:");
                 string Password = Console.ReadLine();
                 File.Create(@"./Password.txt").Close();
                 File.WriteAllText(@"./Password.txt", Password);
                 Console.Clear();
-                Console.WriteLine("µÚÈı²½");
-                Console.WriteLine("ÉèÖÃÔËĞĞ¶Ë¿Ú");
-                Console.WriteLine("\n\nSudoItĞèÒªÄúÉèÖÃÒ»¸öÔËĞĞ¶Ë¿ÚÒÔÔÚÍøÂçÖĞ·ÃÎÊ.\nÇë×¢Òâ:ÄúµÄ¶Ë¿ÚºÅÓ¦¸ÃÊÇÒ»¸ö0~65535Ö®¼äµÄÕıÕûÊı,ÀıÈç\"5000\"");
-                Console.WriteLine("ÎÒÃÇÇ¿ÁÒ½¨ÒéÄúÊ¹ÓÃ5000×÷ÎªÔËĞĞ¶Ë¿ÚºÅ,ÒòÎªSudoItµÄÄ¬ÈÏÉèÖÃ½«5000×÷ÎªÕı³£¶Ë¿Ú");
-                Console.WriteLine("ÇëÉèÖÃÄãµÄÔËĞĞ¶Ë¿Ú²¢°´ÏÂ»Ø³µ:");
+                Console.WriteLine("ç¬¬ä¸‰æ­¥");
+                Console.WriteLine("è®¾ç½®è¿è¡Œç«¯å£");
+                Console.WriteLine("\n\nSudoItéœ€è¦æ‚¨è®¾ç½®ä¸€ä¸ªè¿è¡Œç«¯å£ä»¥åœ¨ç½‘ç»œä¸­è®¿é—®.\nè¯·æ³¨æ„:æ‚¨çš„ç«¯å£å·åº”è¯¥æ˜¯ä¸€ä¸ª0~65535ä¹‹é—´çš„æ­£æ•´æ•°,ä¾‹å¦‚\"5000\"");
+                Console.WriteLine("æˆ‘ä»¬å¼ºçƒˆå»ºè®®æ‚¨ä½¿ç”¨5000ä½œä¸ºè¿è¡Œç«¯å£å·,å› ä¸ºSudoItçš„é»˜è®¤è®¾ç½®å°†5000ä½œä¸ºæ­£å¸¸ç«¯å£");
+                Console.WriteLine("è¯·è®¾ç½®ä½ çš„è¿è¡Œç«¯å£å¹¶æŒ‰ä¸‹å›è½¦:");
                 string Port = Console.ReadLine();
                 PortHelper portHelper = new PortHelper();
                 if (portHelper.portInUse(Convert.ToInt32(Port), PortType.TCP))
                 {
-                    Console.WriteLine("³õÊ¼»¯Ê§°Ü:¸Ã¶Ë¿ÚÒÑ±»Õ¼ÓÃ\nÇë¹Ø±ÕÕ¼ÓÃ¶Ë¿ÚµÄ³ÌĞò»ò¸ü»»¶Ë¿ÚºóÖØÊÔ");
+                    Console.WriteLine("åˆå§‹åŒ–å¤±è´¥:è¯¥ç«¯å£å·²è¢«å ç”¨\nè¯·å…³é—­å ç”¨ç«¯å£çš„ç¨‹åºæˆ–æ›´æ¢ç«¯å£åé‡è¯•");
                     Console.ReadKey();
                     return;
                 }
                 if(Convert.ToInt32(Port)>65535||Convert.ToInt32(Port)<=0)
                 {
-                    Console.WriteLine("³õÊ¼»¯Ê§°Ü:¶Ë¿Ú¸ñÊ½²»ÕıÈ·\nÄúµÄ¶Ë¿ÚºÅÓ¦¸ÃÊÇÒ»¸ö0~65535Ö®¼äµÄÕıÕûÊı,ÀıÈç\"5000\"\nÇëÖØĞÂ³õÊ¼»¯Ó¦ÓÃ³ÌĞò");
+                    Console.WriteLine("åˆå§‹åŒ–å¤±è´¥:ç«¯å£æ ¼å¼ä¸æ­£ç¡®\næ‚¨çš„ç«¯å£å·åº”è¯¥æ˜¯ä¸€ä¸ª0~65535ä¹‹é—´çš„æ­£æ•´æ•°,ä¾‹å¦‚\"5000\"\nè¯·é‡æ–°åˆå§‹åŒ–åº”ç”¨ç¨‹åº");
                     Console.ReadKey();
                     return;
                 }
@@ -60,9 +60,9 @@ namespace SudoItApi
             }
             if (!File.Exists(@"./Password.txt"))
             {
-                Console.WriteLine("ÉèÖÃ¶ÀÁ¢ÃÜÂë");
-                Console.WriteLine("\n\nSudoItĞèÒªÄúÉèÖÃÒ»¸ö¶ÀÁ¢ÃÜÂëÒÔÇø·ÖÄúºÍËûÈË.\nÇë×¢Òâ:ÄúµÄÃÜÂëÓ¦¸Ã°üº¬´óĞ´×Ö·û,Ğ¡Ğ´×Ö·û,³ı?&/\\=µÈÖ®ÍâµÄÌØÊâ×Ö·û");
-                Console.WriteLine("ÇëÉèÖÃÄãµÄÃÜÂë:");
+                Console.WriteLine("è®¾ç½®ç‹¬ç«‹å¯†ç ");
+                Console.WriteLine("\n\nSudoItéœ€è¦æ‚¨è®¾ç½®ä¸€ä¸ªç‹¬ç«‹å¯†ç ä»¥åŒºåˆ†æ‚¨å’Œä»–äºº.\nè¯·æ³¨æ„:æ‚¨çš„å¯†ç åº”è¯¥åŒ…å«å¤§å†™å­—ç¬¦,å°å†™å­—ç¬¦,é™¤?&/\\=ç­‰ä¹‹å¤–çš„ç‰¹æ®Šå­—ç¬¦");
+                Console.WriteLine("è¯·è®¾ç½®ä½ çš„å¯†ç :");
                 string Password = Console.ReadLine();
                 File.Create(@"./Password.txt").Close();
                 File.WriteAllText(@"./Password.txt", Password);
@@ -70,21 +70,21 @@ namespace SudoItApi
             }
             if (!File.Exists(@"./Port.txt"))
             {
-                Console.WriteLine("ÉèÖÃÔËĞĞ¶Ë¿Ú");
-                Console.WriteLine("\n\nSudoItĞèÒªÄúÉèÖÃÒ»¸öÔËĞĞ¶Ë¿ÚÒÔÔÚÍøÂçÖĞ·ÃÎÊ.\nÇë×¢Òâ:ÄúµÄ¶Ë¿ÚºÅÓ¦¸ÃÊÇÒ»¸ö0~65535Ö®¼äµÄÕıÕûÊı,ÀıÈç\"5000\"");
-                Console.WriteLine("ÎÒÃÇÇ¿ÁÒ½¨ÒéÄúÊ¹ÓÃ5000×÷ÎªÔËĞĞ¶Ë¿ÚºÅ,ÒòÎªSudoItµÄÄ¬ÈÏÉèÖÃ½«5000×÷ÎªÕı³£¶Ë¿Ú");
-                Console.WriteLine("ÇëÉèÖÃÄãµÄÔËĞĞ¶Ë¿Ú²¢°´ÏÂ»Ø³µ:");
+                Console.WriteLine("è®¾ç½®è¿è¡Œç«¯å£");
+                Console.WriteLine("\n\nSudoItéœ€è¦æ‚¨è®¾ç½®ä¸€ä¸ªè¿è¡Œç«¯å£ä»¥åœ¨ç½‘ç»œä¸­è®¿é—®.\nè¯·æ³¨æ„:æ‚¨çš„ç«¯å£å·åº”è¯¥æ˜¯ä¸€ä¸ª0~65535ä¹‹é—´çš„æ­£æ•´æ•°,ä¾‹å¦‚\"5000\"");
+                Console.WriteLine("æˆ‘ä»¬å¼ºçƒˆå»ºè®®æ‚¨ä½¿ç”¨5000ä½œä¸ºè¿è¡Œç«¯å£å·,å› ä¸ºSudoItçš„é»˜è®¤è®¾ç½®å°†5000ä½œä¸ºæ­£å¸¸ç«¯å£");
+                Console.WriteLine("è¯·è®¾ç½®ä½ çš„è¿è¡Œç«¯å£å¹¶æŒ‰ä¸‹å›è½¦:");
                 string Port = Console.ReadLine();
                 PortHelper portHelper = new PortHelper();
                 if (portHelper.portInUse(Convert.ToInt32(Port), PortType.TCP))
                 {
-                    Console.WriteLine("³õÊ¼»¯Ê§°Ü:¸Ã¶Ë¿ÚÒÑ±»Õ¼ÓÃ\nÇë¹Ø±ÕÕ¼ÓÃ¶Ë¿ÚµÄ³ÌĞò»ò¸ü»»¶Ë¿ÚºóÖØÊÔ");
+                    Console.WriteLine("åˆå§‹åŒ–å¤±è´¥:è¯¥ç«¯å£å·²è¢«å ç”¨\nè¯·å…³é—­å ç”¨ç«¯å£çš„ç¨‹åºæˆ–æ›´æ¢ç«¯å£åé‡è¯•");
                     Console.ReadKey();
                     return;
                 }
                 if (Convert.ToInt32(Port) > 65535 || Convert.ToInt32(Port) <= 0)
                 {
-                    Console.WriteLine("³õÊ¼»¯Ê§°Ü:¶Ë¿Ú¸ñÊ½²»ÕıÈ·\nÄúµÄ¶Ë¿ÚºÅÓ¦¸ÃÊÇÒ»¸ö0~65535Ö®¼äµÄÕıÕûÊı,ÀıÈç\"5000\"\nÇëÖØĞÂ³õÊ¼»¯Ó¦ÓÃ³ÌĞò");
+                    Console.WriteLine("åˆå§‹åŒ–å¤±è´¥:ç«¯å£æ ¼å¼ä¸æ­£ç¡®\næ‚¨çš„ç«¯å£å·åº”è¯¥æ˜¯ä¸€ä¸ª0~65535ä¹‹é—´çš„æ­£æ•´æ•°,ä¾‹å¦‚\"5000\"\nè¯·é‡æ–°åˆå§‹åŒ–åº”ç”¨ç¨‹åº");
                     Console.ReadKey();
                     return;
                 }
@@ -92,19 +92,19 @@ namespace SudoItApi
                 File.WriteAllText(@"./Port.txt", Port);
                 Console.Clear();
             }
-            Console.WriteLine("³õÊ¼»¯³É¹¦");
-            Log.SaveLog("³õÊ¼»¯ÒÑÍê³É");
+            Console.WriteLine("åˆå§‹åŒ–æˆåŠŸ");
+            Log.SaveLog("åˆå§‹åŒ–å·²å®Œæˆ");
         }
     }
     class PortHelper
     {
 
-        #region Ö¸¶¨ÀàĞÍµÄ¶Ë¿ÚÊÇ·ñÒÑ¾­±»Ê¹ÓÃÁË
+        #region æŒ‡å®šç±»å‹çš„ç«¯å£æ˜¯å¦å·²ç»è¢«ä½¿ç”¨äº†
         /// <summary>
-        /// Ö¸¶¨ÀàĞÍµÄ¶Ë¿ÚÊÇ·ñÒÑ¾­±»Ê¹ÓÃÁË
+        /// æŒ‡å®šç±»å‹çš„ç«¯å£æ˜¯å¦å·²ç»è¢«ä½¿ç”¨äº†
         /// </summary>
-        /// <param name="port">¶Ë¿ÚºÅ</param>
-        /// <param name="type">¶Ë¿ÚÀàĞÍ</param>
+        /// <param name="port">ç«¯å£å·</param>
+        /// <param name="type">ç«¯å£ç±»å‹</param>
         /// <returns></returns>
         public bool portInUse(int port, PortType type)
         {
@@ -135,18 +135,18 @@ namespace SudoItApi
 
     }
 
-    #region ¶Ë¿ÚÃ¶¾ÙÀàĞÍ
+    #region ç«¯å£æšä¸¾ç±»å‹
     /// <summary>
-    /// ¶Ë¿ÚÀàĞÍ
+    /// ç«¯å£ç±»å‹
     /// </summary>
     enum PortType
     {
         /// <summary>
-        /// TCPÀàĞÍ
+        /// TCPç±»å‹
         /// </summary>
         TCP,
         /// <summary>
-        /// UDPÀàĞÍ
+        /// UDPç±»å‹
         /// </summary>
         UDP
     }
