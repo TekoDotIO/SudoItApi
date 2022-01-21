@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 
@@ -647,6 +647,11 @@ namespace SudoItApi.Controllers
         public ActionResult<string> PostGetList([FromBody] Json obj)
         {
             return GetList(obj.Path, obj.Password);
+        }
+        [HttpPost]
+        public ActionResult<string> PostGetInfo([FromBody] Json obj)
+        {
+            return "";
         }
         public class Json
         {
