@@ -100,7 +100,7 @@ namespace SudoItApi.Controllers
         /// <param name="Password">密码</param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<string> Mkfile(string Path, string Password)
+        public ActionResult<string> MkFile(string Path, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password))
@@ -407,7 +407,7 @@ namespace SudoItApi.Controllers
         /// <param name="Password">密码</param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<string> Mkdir(string Path, string Password)
+        public ActionResult<string> MkDir(string Path, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password))
@@ -631,34 +631,114 @@ namespace SudoItApi.Controllers
         #endregion
         #endregion
         #region POST部分
-        #region 获取所有磁盘
         /// <summary>
-        /// 以POST方式获取磁盘
+        /// POST操作
         /// </summary>
-        /// <param name="Data">包含密码的词典</param>
+        /// <param name="obj">JSON对象</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<string> PostGetDrives([FromBody] Json obj)
+        public ActionResult<string> PostApi([FromBody] Json obj)
         {
-            string Password = obj.Password;
-            return GetDrives(Password);
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            Log.SaveLog("此操作为POST操作,来自"+ip);
+            switch (obj.Operation)
+            {
+                case "GetDrives":
+                    string Password = obj.Password;
+                    return GetDrives(Password);
+                case "GetList":
+                    return GetList(obj.Path, obj.Password);
+                #region POST文件操作
+                case "MkFile":
+                    return MkFile(obj.Path, obj.Password);
+                case "MoveFile":
+                    return MoveFile(obj.FromPath, obj.ToPath, obj.Password);
+                case "DeleteFile":
+                    return DeleteFile(obj.Path, obj.Password);
+                case "CopyFile":
+                    return CopyFile(obj.FromPath, obj.ToPath, obj.Password);
+                case "GetFileInfo":
+                    return GetFileInfo(obj.Path, obj.Password);
+                case "ReadFile":
+                    return ReadFile(obj.Path, obj.Password);
+                case "WriteFile":
+                    return WriteFile(obj.Path, obj.Password, obj.Text);
+                case "WriteToFile":
+                    return WriteToFile(obj.Path, obj.Password, obj.Text);
+                case "ZipFile":
+                    return ZipFile(obj.FromPath, obj.ToPath, obj.Password, obj.Type);
+                case "DownloadFile":
+                    return "{\"status\":\"Error\",\"msg\":\"Please use PostDownload metgod to download file.\"}";
+                case "RenameFile":
+                    return RenameFile(obj.Path, obj.Password, obj.Name);
+                #endregion
+                #region POST文件夹操作
+                case "MkDir":
+                    return MkDir(obj.Path, obj.Password);
+                case "MoveDir":
+                    return MoveDir(obj.FromPath, obj.ToPath, obj.Password);
+                case "DeleteDir":
+                    return DeleteDir(obj.Path, obj.Password);
+                case "CopyDir":
+                    return CopyDir(obj.FromPath, obj.ToPath, obj.Password);
+                case "GetDirInfo":
+                    return GetDirInfo(obj.Path, obj.Password);
+                case "ZipDir":
+                    return ZipDir(obj.FromPath, obj.ToPath, obj.Password, obj.Type);
+                case "RenameDir":
+                    return RenameDir(obj.Path, obj.Password, obj.Name);
+                #endregion
+            }
+            return "{\"status\":\"Error\",\"msg\":\"Operation not found.\"}";
         }
+        /// <summary>
+        /// 下载文件 (POST凭据)
+        /// </summary>
+        /// <param name="obj">JSON对象</param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult<string> PostGetList([FromBody] Json obj)
+        public ActionResult PostDownload([FromBody] Json obj)
         {
-            return GetList(obj.Path, obj.Password);
+            return DownloadFile(obj.Path, obj.Password);
         }
-        [HttpPost]
-        public ActionResult<string> PostGetInfo([FromBody] Json obj)
-        {
-            return "";
-        }
+        /// <summary>
+        /// JSON操作对象
+        /// </summary>
         public class Json
         {
+            /// <summary>
+            /// 操作指示(命令)
+            /// </summary>
+            public string Operation { get; set; }
+            /// <summary>
+            /// 密码
+            /// </summary>
             public string Password { get; set; }
+            /// <summary>
+            /// 操作路径
+            /// </summary>
             public string Path { get; set; }
+            /// <summary>
+            /// 操作路径(从)
+            /// </summary>
+            public string FromPath { get; set; }
+            /// <summary>
+            /// 操作路径(至)
+            /// </summary>
+            public string ToPath { get; set; }
+            /// <summary>
+            /// 操作文本
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// 操作格式
+            /// </summary>
+            public string Type { get; set; }
+            /// <summary>
+            /// 名称
+            /// </summary>
+            public string Name { get; set; }
         }
-        #endregion
         #endregion
     }
     #endregion
