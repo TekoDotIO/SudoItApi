@@ -24,7 +24,7 @@ namespace SudoItApi.Controllers
             if (SetAndAuth.Auth(Password))
             {
                 string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " execated \"" + Command + "\"");
+                Log.SaveLog(ip + " 执行了命令 \"" + Command + "\"");
                 string result = Cmd.RunCmd(Command, true);
                 return result;
             }
@@ -48,7 +48,7 @@ namespace SudoItApi.Controllers
             if (SetAndAuth.Auth(Password))
             {
                 string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " SafeExecated \"" + Command + "\"");
+                Log.SaveLog(ip + " 安全执行了 \"" + Command + "\"");
                 Cmd.RunCmd(Command, false);
                 return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
             }
@@ -70,7 +70,9 @@ namespace SudoItApi.Controllers
         [HttpPost]
         public ActionResult<string> PostApi([FromBody] Json obj)
         {
-            switch(obj.WaitForExit)
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            Log.SaveLog(ip + "使用POST方式访问了命令模块");
+            switch (obj.WaitForExit)
             {
                 case "True":
                 case "true":
