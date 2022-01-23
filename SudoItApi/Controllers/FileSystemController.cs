@@ -643,49 +643,49 @@ namespace SudoItApi.Controllers
             Log.SaveLog("此操作为POST操作,来自"+ip);
             switch (obj.Operation)
             {
-                case "GetDrives":
+                case "GetDrives"://获取所有磁盘
                     string Password = obj.Password;
                     return GetDrives(Password);
-                case "GetList":
+                case "GetList"://获取目录下的文件列表
                     return GetList(obj.Path, obj.Password);
                 #region POST文件操作
-                case "MkFile":
+                case "MkFile"://创建空文件
                     return MkFile(obj.Path, obj.Password);
-                case "MoveFile":
+                case "MoveFile"://移动文件
                     return MoveFile(obj.FromPath, obj.ToPath, obj.Password);
-                case "DeleteFile":
+                case "DeleteFile"://删除文件
                     return DeleteFile(obj.Path, obj.Password);
-                case "CopyFile":
+                case "CopyFile"://复制文件
                     return CopyFile(obj.FromPath, obj.ToPath, obj.Password);
-                case "GetFileInfo":
+                case "GetFileInfo"://获取文件信息
                     return GetFileInfo(obj.Path, obj.Password);
-                case "ReadFile":
+                case "ReadFile"://读取文件内容(文本)
                     return ReadFile(obj.Path, obj.Password);
-                case "WriteFile":
+                case "WriteFile"://以Text中的内容写入文件(覆盖所有内容)
                     return WriteFile(obj.Path, obj.Password, obj.Text);
-                case "WriteToFile":
+                case "WriteToFile"://以Text中的内容写入到文件末尾
                     return WriteToFile(obj.Path, obj.Password, obj.Text);
-                case "ZipFile":
+                case "ZipFile"://压缩文件
                     return ZipFile(obj.FromPath, obj.ToPath, obj.Password, obj.Type);
-                case "DownloadFile":
+                case "DownloadFile"://获取远程文件(已弃用)
                     return "{\"status\":\"Error\",\"msg\":\"Please use PostDownload metgod to download file.\"}";
-                case "RenameFile":
+                case "RenameFile"://重命名文件
                     return RenameFile(obj.Path, obj.Password, obj.Name);
                 #endregion
                 #region POST文件夹操作
-                case "MkDir":
+                case "MkDir"://创建文件夹
                     return MkDir(obj.Path, obj.Password);
-                case "MoveDir":
+                case "MoveDir"://移动文件夹
                     return MoveDir(obj.FromPath, obj.ToPath, obj.Password);
-                case "DeleteDir":
+                case "DeleteDir"://删除文件夹
                     return DeleteDir(obj.Path, obj.Password);
-                case "CopyDir":
+                case "CopyDir"://复制文件夹
                     return CopyDir(obj.FromPath, obj.ToPath, obj.Password);
-                case "GetDirInfo":
+                case "GetDirInfo"://获取文件夹信息
                     return GetDirInfo(obj.Path, obj.Password);
-                case "ZipDir":
+                case "ZipDir"://压缩整个目录
                     return ZipDir(obj.FromPath, obj.ToPath, obj.Password, obj.Type);
-                case "RenameDir":
+                case "RenameDir"://重命名目录
                     return RenameDir(obj.Path, obj.Password, obj.Name);
                 #endregion
             }

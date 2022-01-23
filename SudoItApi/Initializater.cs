@@ -15,8 +15,7 @@ namespace SudoItApi
             Console.ForegroundColor = ConsoleColor.Green;
             if (!File.Exists(@"./deletemetoreset.each"))
             {
-                Console.Clear();
-                Console.WriteLine("欢迎使用SudoIt!系统检测到你是第一次运行SudoIt(或者你把程序的记忆文件吃掉了hh),因此,你需要完成几个简单的步骤,在这之后你才可以尽情享受SudoIt!");
+                Console.WriteLine("\n\n\n欢迎使用SudoIt!系统检测到你是第一次运行SudoIt(或者你把程序的记忆文件吃掉了hh),因此,你需要完成几个简单的步骤,在这之后你才可以尽情享受SudoIt!");
                 Console.WriteLine("按回车键继续");
                 Console.ReadKey();
                 Console.Clear();

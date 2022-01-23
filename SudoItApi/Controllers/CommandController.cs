@@ -11,6 +11,7 @@ namespace SudoItApi.Controllers
     [Route("SudoIt/[controller]/[action]")]
     public class CommandController : ControllerBase
     {
+        #region GET部分
         /// <summary>
         /// 执行命令并获取返回值
         /// </summary>
@@ -59,31 +60,39 @@ namespace SudoItApi.Controllers
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
             }
         }
+        #endregion
+        #region POST部分
         /// <summary>
-        /// 延时执行命令(不等待返回值)
+        /// POST方式执行命令
         /// </summary>
-        /// <param name="Command">命令文本</param>
-        /// <param name="Password">密码</param>
-        /// <param name="DelayTime">延时时长(毫秒)</param>
-        /// <returns>词典(成功或错误)</returns>
-        [HttpGet]
-        public ActionResult<string> TimeDelayExecute(string Command, string Password, string DelayTime)
+        /// <param name="obj">JSON对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<string> PostApi([FromBody] Json obj)
         {
-            if (SetAndAuth.Auth(Password))
+            switch(obj.WaitForExit)
             {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " SafeExecated \"" + Command + "\"");
-                Cmd.DelayRunCmd(Command, Convert.ToInt32(DelayTime));
-                return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
-            }
-            else
-            {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                Log.SaveLog(ip + " 尝试执行命令 \"" + Command + "\" ,但是他/她输入了错误的密码");
-                HttpContext.Response.StatusCode = 403;
-                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
+                case "True":
+                case "true":
+                case "TRUE":
+                case "1":
+                    return ExecuteCommand(obj.Command, obj.Password);
+                case "False":
+                case "FALSE":
+                case "false":
+                case "0":
+                    return SafeExecute(obj.Command, obj.Password);
+                default:
+                    return "{\"status\":\"Error\",\"msg\":\"未指定是否等待返回值(WaitForExit)\"}";
             }
         }
+        public class Json
+        {
+            public string WaitForExit { get; set; }
+            public string Command { get; set; }
+            public string Password { get; set; }
+        }
+        #endregion
     }
     #endregion
 }

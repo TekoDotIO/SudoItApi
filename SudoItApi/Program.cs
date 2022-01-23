@@ -13,6 +13,19 @@ namespace SudoItApi
         /// <param name="args">控制台执行参数</param>
         public static void Main(string[] args)
         {
+            Console.WriteLine("欢迎使用" + AppInfo.AppName);
+            Console.WriteLine(AppInfo.Copyright + " All right reserved.");
+            Console.WriteLine("版本号:" + AppInfo.Version);
+            Console.WriteLine("正在检测用户信息...");
+            if (PersonalInfo.Name != null)
+            {
+                Console.WriteLine("欢迎来自" + PersonalInfo.Company + "的用户" + PersonalInfo.Name + "使用本应用程序!");
+                if (PersonalInfo.InsidePermission)
+                {
+                    Console.WriteLine("开发者模式已激活!");
+                    Console.WriteLine("App内部版本号:" + AppInfo.InsideVersion+"\n\n更新日志:\n"+AppInfo.UpdateLog);
+                }
+            }
             Console.WriteLine("正在初始化应用程序...");
             Initializater.Initializate();
             Console.WriteLine("从本地读取端口文件...");
