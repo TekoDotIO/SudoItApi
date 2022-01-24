@@ -324,23 +324,16 @@ namespace SudoItApi.Controllers
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             Log.SaveLog(ip + "使用POST方式访问了进程模块");
-            switch (obj.Operation)
+            return obj.Operation switch
             {
-                case "GetProcesses":
-                    return GetProcesses(obj.Password);
-                case "KillProcessByPid":
-                    return KillProcessByPid(obj.Password, obj.Pid);
-                case "KillProcessByName":
-                    return KillProcessByName(obj.Password, obj.Name);
-                case "Start":
-                    return StartProcess(obj.Password, obj.Path, obj.CreateWindow, obj.Args);
-                case "GetName":
-                    return GetName(obj.Password, obj.Pid);
-                case "GetPid":
-                    return GetPid(obj.Password, obj.Name);
-                default:
-                    return "{\"status\":\"Error\",\"msg\":\"未指定的操作\"}";
-            }
+                "GetProcesses" => GetProcesses(obj.Password),
+                "KillProcessByPid" => KillProcessByPid(obj.Password, obj.Pid),
+                "KillProcessByName" => KillProcessByName(obj.Password, obj.Name),
+                "Start" => StartProcess(obj.Password, obj.Path, obj.CreateWindow, obj.Args),
+                "GetName" => GetName(obj.Password, obj.Pid),
+                "GetPid" => GetPid(obj.Password, obj.Name),
+                _ => "{\"status\":\"Error\",\"msg\":\"未指定的操作\"}",
+            };
         }
         public class Json
         {

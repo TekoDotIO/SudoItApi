@@ -31,6 +31,7 @@ namespace SudoItApi
                 Console.WriteLine("请设置你的密码并按下回车:");
                 string Password = Console.ReadLine();
                 File.Create(@"./Password.txt").Close();
+                //必须及时Close对象,否则写入时文件被占用
                 File.WriteAllText(@"./Password.txt", Password);
                 Console.Clear();
                 Console.WriteLine("第三步");
@@ -40,22 +41,26 @@ namespace SudoItApi
                 Console.WriteLine("请设置你的运行端口并按下回车:");
                 string Port = Console.ReadLine();
                 PortHelper portHelper = new PortHelper();
-                if (portHelper.portInUse(Convert.ToInt32(Port), PortType.TCP))
+                //构建新的端口检测类
+                if (portHelper.PortInUse(Convert.ToInt32(Port), PortType.TCP))
                 {
                     Console.WriteLine("初始化失败:该端口已被占用\n请关闭占用端口的程序或更换端口后重试");
                     Console.ReadKey();
                     return;
                 }
-                if(Convert.ToInt32(Port)>65535||Convert.ToInt32(Port)<=0)
+                if(Convert.ToInt32(Port)>65535||Convert.ToInt32(Port)<=0)//检测端口是否不符合要求
+                //这里注意,Int32只可能是整数,因此无需检查输入的端口是否是小数
                 {
                     Console.WriteLine("初始化失败:端口格式不正确\n您的端口号应该是一个0~65535之间的正整数,例如\"5000\"\n请重新初始化应用程序");
                     Console.ReadKey();
                     return;
                 }
                 File.Create(@"./Port.txt").Close();
+                //必须及时Close对象,否则写入时文件被占用
                 File.WriteAllText(@"./Port.txt", Port);
                 Console.Clear();
                 File.Create(@"./deletemetoreset.each").Close();
+                //创建记忆文件,防止二次(新安装)初始化
             }
             if (!File.Exists(@"./Password.txt"))
             {
@@ -64,6 +69,7 @@ namespace SudoItApi
                 Console.WriteLine("请设置你的密码:");
                 string Password = Console.ReadLine();
                 File.Create(@"./Password.txt").Close();
+                //必须及时Close对象,否则写入时文件被占用
                 File.WriteAllText(@"./Password.txt", Password);
                 Console.Clear();
             }
@@ -75,7 +81,7 @@ namespace SudoItApi
                 Console.WriteLine("请设置你的运行端口并按下回车:");
                 string Port = Console.ReadLine();
                 PortHelper portHelper = new PortHelper();
-                if (portHelper.portInUse(Convert.ToInt32(Port), PortType.TCP))
+                if (portHelper.PortInUse(Convert.ToInt32(Port), PortType.TCP))
                 {
                     Console.WriteLine("初始化失败:该端口已被占用\n请关闭占用端口的程序或更换端口后重试");
                     Console.ReadKey();
@@ -88,6 +94,7 @@ namespace SudoItApi
                     return;
                 }
                 File.Create(@"./Port.txt").Close();
+                //必须及时Close对象,否则写入时文件被占用
                 File.WriteAllText(@"./Port.txt", Port);
                 Console.Clear();
             }
@@ -105,11 +112,11 @@ namespace SudoItApi
         /// <param name="port">端口号</param>
         /// <param name="type">端口类型</param>
         /// <returns></returns>
-        public bool portInUse(int port, PortType type)
+        public bool PortInUse(int port, PortType type)
         {
             bool flag = false;
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-            IPEndPoint[] ipendpoints = null;
+            IPEndPoint[] ipendpoints;
             if (type == PortType.TCP)
             {
                 ipendpoints = properties.GetActiveTcpListeners();
@@ -126,8 +133,8 @@ namespace SudoItApi
                     break;
                 }
             }
-            ipendpoints = null;
-            properties = null;
+            //ipendpoints = null;
+            //properties = null;
             return flag;
         }
         #endregion

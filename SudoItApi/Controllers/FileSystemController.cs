@@ -320,6 +320,7 @@ namespace SudoItApi.Controllers
         /// <param name="FromPath">起始路径</param>
         /// <param name="ToPath">目的路径</param>
         /// <param name="Password">密码</param>
+        /// <param name="Type">格式</param>
         /// <returns></returns>
         [HttpGet]
         public ActionResult<string> ZipFile(string FromPath, string ToPath, string Password, string Type)
@@ -547,6 +548,7 @@ namespace SudoItApi.Controllers
         /// <param name="FromPath">起始路径</param>
         /// <param name="ToPath">目的路径</param>
         /// <param name="Password">密码</param>
+        /// <param name="Type">目标格式</param>
         /// <returns></returns>
         [HttpGet]
         public ActionResult<string> ZipDir(string FromPath, string ToPath, string Password, string Type)

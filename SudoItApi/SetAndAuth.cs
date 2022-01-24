@@ -11,7 +11,7 @@ namespace SudoItApi
         /// <returns></returns>
         public static bool Auth(string Password)
         {
-            if( File.ReadAllText(@"./Password.txt")==Password)
+            if (File.ReadAllText(@"./Password.txt") == Password) //读取本地密码
             {
                 return true;
             }

@@ -16,7 +16,7 @@ namespace SudoItApi
             {
                 for (int i = 0; i < tmp.ArchiveFileData.Count; i++)
                 {
-                    tmp.ExtractFiles(ToPath, tmp.ArchiveFileData[i].Index);
+                    tmp.ExtractFiles(ToPath, tmp.ArchiveFileData[i].Index);//打包文件
                 }
             }
         }
@@ -28,8 +28,8 @@ namespace SudoItApi
         /// <param name="Format">格式</param>
         public static void ZipFiles(string FromPath, string ToPath, string Format)
         {
-            SevenZipCompressor tmp = new SevenZipCompressor();
-            switch (Format)
+            SevenZipCompressor tmp = new SevenZipCompressor();//构建压缩类
+            switch (Format)//转换格式
             {
                 case "SevenZip":
                 case "7z":
@@ -45,9 +45,9 @@ namespace SudoItApi
                     break;
                 default:
                     Exception ex = new Exception("Cannot detect file type. Available type: 7z, Tar, Zip.");
-                    throw ex;
+                    throw ex;//抛异常
             }
-            tmp.CompressFiles(ToPath, FromPath);
+            tmp.CompressFiles(ToPath, FromPath);//开始压缩
         }
         /// <summary>
         /// 压缩目录
@@ -57,8 +57,8 @@ namespace SudoItApi
         /// <param name="Format">格式</param>
         public static void ZipDir(string FromPath, string ToPath, string Format)
         {
-            SevenZipCompressor tmp = new SevenZipCompressor();
-            switch (Format)
+            SevenZipCompressor tmp = new SevenZipCompressor();//构建压缩类
+            switch (Format)//转换格式
             {
                 case "SevenZip":
                 case "7z":
@@ -76,7 +76,7 @@ namespace SudoItApi
                     Exception ex = new Exception("Cannot detect file type. Available type: 7z, Tar, Zip.");
                     throw ex;
             }
-            tmp.CompressDirectory(FromPath, ToPath);
+            tmp.CompressDirectory(FromPath, ToPath);//开始压缩
         }
     }
 }
