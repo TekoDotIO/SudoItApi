@@ -226,6 +226,92 @@ namespace SudoItApi.Controllers
                 }
             }
         }
+
+        //以下代码已废弃
+        //原因:无法实现所需需求,无法跨进程获取StartInfo.
+
+
+        ///// <summary>
+        ///// 通过Pid查询进程信息
+        ///// </summary>
+        ///// <param name="Password">密码</param>
+        ///// <param name="Pid">进程Pid</param>
+        ///// <returns></returns>
+        //[HttpGet]
+        //public ActionResult<string> GetInfoByPid(string Password, string Pid)
+        //{
+        //    string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        //    if (!SetAndAuth.Auth(Password))
+        //    {
+        //        Log.SaveLog(ip + "尝试通过Pid查询进程" + Pid + ",但他/她输入了错误的密码");
+        //        return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
+        //    }
+        //    else
+        //    {
+        //        Log.SaveLog(ip + "尝试通过Pid查询进程" + Pid);
+        //        try
+        //        {
+        //            Process process = Process.GetProcessById(Convert.ToInt32(Pid));
+        //            string Name = process.ProcessName;
+        //            string Path = process.StartInfo.FileName;
+        //            string UserInfo = process.StartInfo.UserName;
+        //            string Args = process.StartInfo.Arguments;
+        //            string WorkDir = process.StartInfo.WorkingDirectory;
+        //            string StartTime = process.StartTime.ToString("yyyy-MM-dd,HH:mm");
+        //            return "{\n\"Name\":\"" + Name + "\",\n\"Pid\":\"" + Pid + "\",\n\"Path\":\"" + Path + "\",\n\"User\":\"" + UserInfo + "\",\n\"Args\":\"" + Args + "\",\n\"WorkDir\":\"" + WorkDir + "\",\n\"StartTime\":\"" + StartTime + "\"\n}";
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Log.SaveLog("触发异常:\n" + ex.ToString());
+        //            return "{\"status\":\"Error\",\"msg\":\"查询进程时出错.可能原因:1.Pid格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\"}";
+        //        }
+        //    }
+        //}
+        ///// <summary>
+        ///// 通过Pid查询进程信息
+        ///// </summary>
+        ///// <param name="Password">密码</param>
+        ///// <param name="Name">进程名称</param>
+        ///// <returns></returns>
+        //[HttpGet]
+        //public ActionResult<string> GetInfoByName(string Password, string Name)
+        //{
+        //    string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        //    if (!SetAndAuth.Auth(Password))
+        //    {
+        //        Log.SaveLog(ip + "尝试通过名称查询进程" + Name + ",但他/她输入了错误的密码");
+        //        return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
+        //    }
+        //    else
+        //    {
+        //        Log.SaveLog(ip + "尝试通过名称查询进程" + Name);
+        //        try
+        //        {
+        //            Process[] processes = Process.GetProcessesByName(Name);
+        //            string Dictionary = "{";
+        //            foreach (Process process in processes)
+        //            {
+        //                string Pid = process.Id.ToString();
+        //                string Path = process.StartInfo.FileName;
+        //                string UserInfo = process.StartInfo.UserName;
+        //                string Args = process.StartInfo.Arguments;
+        //                string WorkDir = process.StartInfo.WorkingDirectory;
+        //                string StartTime = process.StartTime.ToString("yyyy-MM-dd,HH:mm");
+        //                Dictionary = Dictionary + "\"" + Pid + "\":\"{\n\"Name\":\"" + Name + "\",\n\"Pid\":\"" + Pid + "\",\n\"Path\":\"" + Path + "\",\n\"User\":\"" + UserInfo + "\",\n\"Args\":\"" + Args + "\",\n\"WorkDir\":\"" + WorkDir + "\",\n\"StartTime\":\"" + StartTime + "\"\n}\",";
+        //            }
+        //            Dictionary = Dictionary[0..^1] + "\n}";
+        //            return Dictionary;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Log.SaveLog("触发异常:\n" + ex.ToString());
+        //            return "{\"status\":\"Error\",\"msg\":\"查询进程时出错.可能原因:1.名称格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\"}";
+        //        }
+        //    }
+        //}
+
+        //以上代码已废弃
+        //原因:无法实现所需需求,无法跨进程获取StartInfo.
         #endregion
         #region POST模块
         /// <summary>
@@ -237,7 +323,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> PostApi([FromBody] Json obj)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            Log.SaveLog(ip + "使用POST方式访问了命令模块");
+            Log.SaveLog(ip + "使用POST方式访问了进程模块");
             switch (obj.Operation)
             {
                 case "GetProcesses":

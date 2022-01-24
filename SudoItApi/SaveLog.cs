@@ -12,7 +12,8 @@ namespace SudoItApi
         public static void SaveLog(string message)
         {
             message = DateTime.Now.ToString() + " " + message;
-            System.IO.File.AppendAllText(@".\Console" + DateTime.Now.ToString("yyyy-MM-dd") + ".log", "\r\n" + message);
+            Directory.CreateDirectory("./Log/");
+            System.IO.File.AppendAllText(@"./Log/Console" + DateTime.Now.ToString("yyyy-MM-dd") + ".log", "\r\n" + message);
             Console.WriteLine(message);
         }
     }

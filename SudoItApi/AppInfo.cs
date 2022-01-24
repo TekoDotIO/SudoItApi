@@ -3,10 +3,10 @@
     public class AppInfo
     {
         public static string AppName = "$udo!T Api Server";
-        public static string Version = "v.1.0.0.1";
-        public static string InsideVersion = "Beta 0002";
+        public static string Version = "v.1.0.0.2";
+        public static string InsideVersion = "Alpha 1";
         public static string Copyright = "EachOther Tech. 2022";
-        public static string UpdateLog = "- The first beta version of $udo!T Api";
+        public static string UpdateLog = "-更新了进程类部分功能\n-添加注释\n-现在,日志文件将被保存到Log文件夹下";
     }
     public class PersonalInfo
     {
