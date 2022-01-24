@@ -12,6 +12,14 @@ namespace SudoItApi
         /// <param name="ToPath">解压路径</param>
         public static void Unzip(string FromPath,string ToPath)
         {
+            if (IntPtr.Size == 4)
+            {
+                SevenZipBase.SetLibraryPath(@"./x86/7z.dll");
+            }
+            else
+            {
+                SevenZipBase.SetLibraryPath(@"./x64/7z.dll");
+            }
             SevenZipExtractor tmp = new SevenZipExtractor(FromPath);
             {
                 for (int i = 0; i < tmp.ArchiveFileData.Count; i++)
@@ -28,6 +36,14 @@ namespace SudoItApi
         /// <param name="Format">格式</param>
         public static void ZipFiles(string FromPath, string ToPath, string Format)
         {
+            if (IntPtr.Size == 4)
+            {
+                SevenZipBase.SetLibraryPath(@"./x86/7z.dll");
+            }
+            else
+            {
+                SevenZipBase.SetLibraryPath(@"./x64/7z.dll");
+            }
             SevenZipCompressor tmp = new SevenZipCompressor();//构建压缩类
             switch (Format)//转换格式
             {
@@ -57,6 +73,14 @@ namespace SudoItApi
         /// <param name="Format">格式</param>
         public static void ZipDir(string FromPath, string ToPath, string Format)
         {
+            if (IntPtr.Size == 4)
+            {
+                SevenZipBase.SetLibraryPath(@"./x86/7z.dll");
+            }
+            else
+            {
+                SevenZipBase.SetLibraryPath(@"./x64/7z.dll");
+            }
             SevenZipCompressor tmp = new SevenZipCompressor();//构建压缩类
             switch (Format)//转换格式
             {
