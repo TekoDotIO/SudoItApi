@@ -147,10 +147,10 @@ namespace SudoItApi.Controllers
         public ActionResult<string> Status(string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            Log.SaveLog(ip + " 尝试获取本机信息 ,但是他/她输入了错误的密码");
             if (!SetAndAuth.Auth(Password))
             {
                 HttpContext.Response.StatusCode = 403;
+                Log.SaveLog(ip + " 尝试获取本机信息 ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
             }
             string MacName = Environment.MachineName;
