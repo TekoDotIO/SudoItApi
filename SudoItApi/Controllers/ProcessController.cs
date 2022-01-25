@@ -27,7 +27,7 @@ namespace SudoItApi.Controllers
             {
                 Log.SaveLog(ip + "尝试获取所有进程");
                 Process[] processes = Process.GetProcesses();
-                string Dictionary = "{";
+                string Dictionary = "{";//构造词典
                 foreach (Process process in processes)
                 {
                     string Name = process.ProcessName.ToString();
@@ -35,7 +35,7 @@ namespace SudoItApi.Controllers
                     Dictionary = Dictionary + "\n\"" + Name + "\":\"" + Pid + "\",";
                 }
                 Dictionary = Dictionary[0..^1] + "\n}";
-                return Dictionary;
+                return Dictionary;//返回词典
             }
         }
         /// <summary>
@@ -58,14 +58,14 @@ namespace SudoItApi.Controllers
                 Log.SaveLog(ip + "尝试通过Pid杀死进程" + Pid);
                 try
                 {
-                    Process process = Process.GetProcessById(Convert.ToInt32(Pid));
-                    process.Kill();
+                    Process process = Process.GetProcessById(Convert.ToInt32(Pid));//通过Pid查找进程
+                    process.Kill();//杀死指定进程
                     return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
                 }
                 catch(Exception ex)
                 {
                     Log.SaveLog("触发异常:\n" + ex.ToString());
-                    return "{\"status\":\"Error\",\"msg\":\"查找或杀死进程时出错.可能原因:1.Pid格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\"}";
+                    return "{\"status\":\"Exception\",\"msg\":\"查找或杀死进程时出错.可能原因:1.Pid格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\",\"exception\":\"" + ex.Message + "\"}";
                 }
             }
         }
@@ -89,8 +89,9 @@ namespace SudoItApi.Controllers
                 Log.SaveLog(ip + "尝试通过名称杀死进程" + Name);
                 try
                 {
-                    Process[] processes = Process.GetProcessesByName(Name);
-                    foreach(Process process in processes)
+                    Process[] processes = Process.GetProcessesByName(Name);//通过名称获取进程
+                    //这里需要用Process[]来接收,因为可能存在进程同名
+                    foreach(Process process in processes)//逐个杀死进程
                     {
                         process.Kill();
                         Log.SaveLog("成功杀死了位于Pid" + process.Id + "的进程" + Name);
@@ -100,7 +101,7 @@ namespace SudoItApi.Controllers
                 catch (Exception ex)
                 {
                     Log.SaveLog("触发异常:\n" + ex.ToString());
-                    return "{\"status\":\"Error\",\"msg\":\"查找或杀死进程时出错.可能原因:1.名称格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\"}";
+                    return "{\"status\":\"Exception\",\"msg\":\"查找或杀死进程时出错.可能原因:1.名称格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\",\"exception\":\"" + ex.Message + "\"}";
                 }
             }
         }
@@ -126,9 +127,9 @@ namespace SudoItApi.Controllers
                 Log.SaveLog(ip + "尝试启动进程" + Path);
                 try
                 {
-                    Process process = new Process();
-                    process.StartInfo.FileName = Path;
-                    switch (CreateWindow)
+                    Process process = new Process();//构造进程
+                    process.StartInfo.FileName = Path;//设定路径
+                    switch (CreateWindow)//判断是否启动窗口
                     {
                         case "True":
                         case "true":
@@ -149,13 +150,13 @@ namespace SudoItApi.Controllers
                     {
                         process.StartInfo.Arguments = Args;
                     }
-                    process.Start();
+                    process.Start();//启动进程
                     return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
                 }
                 catch (Exception ex)
                 {
                     Log.SaveLog("触发异常:\n" + ex.ToString());
-                    return "{\"status\":\"Error\",\"msg\":\"启动进程出错.可能原因:1.名称格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\"}";
+                    return "{\"status\":\"Exception\",\"msg\":\"启动进程出错.可能原因:1.名称格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\",\"exception\":\"" + ex.Message + "\"}";
                 }
             }
         }
@@ -179,13 +180,13 @@ namespace SudoItApi.Controllers
                 Log.SaveLog(ip + "尝试通过Pid查找进程" + Pid);
                 try
                 {
-                    string Name = Process.GetProcessById(Convert.ToInt32(Pid)).ProcessName;
+                    string Name = Process.GetProcessById(Convert.ToInt32(Pid)).ProcessName;//获取指定Pid的进程
                     return "{\"status\":\"OK\",\"info\":\"" + Name + "\"}";
                 }
                 catch (Exception ex)
                 {
                     Log.SaveLog("触发异常:\n" + ex.ToString());
-                    return "{\"status\":\"Error\",\"msg\":\"查找进程时出错.可能原因:1.Pid格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\"}";
+                    return "{\"status\":\"Exception\",\"msg\":\"查找进程时出错.可能原因:1.Pid格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\",\"exception\":\"" + ex.Message + "\"}";
                 }
             }
         }
@@ -209,7 +210,8 @@ namespace SudoItApi.Controllers
                 Log.SaveLog(ip + "尝试通过名称查找进程" + Name);
                 try
                 {
-                    Process[] Pids = Process.GetProcessesByName(Name);
+                    Process[] Pids = Process.GetProcessesByName(Name);//通过名称获取进程集
+                    //可能有多个进程,使用Process[]
                     string Dictionary = "[";
                     foreach (Process process in Pids)
                     {
@@ -222,7 +224,7 @@ namespace SudoItApi.Controllers
                 catch (Exception ex)
                 {
                     Log.SaveLog("触发异常:\n" + ex.ToString());
-                    return "{\"status\":\"Error\",\"msg\":\"查找进程时出错.可能原因:1.名称格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\"}";
+                    return "{\"status\":\"Exception\",\"msg\":\"查找进程时出错.可能原因:1.名称格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\",\"exception\":\"" + ex.Message + "\"}";
                 }
             }
         }
@@ -263,7 +265,7 @@ namespace SudoItApi.Controllers
         //        catch (Exception ex)
         //        {
         //            Log.SaveLog("触发异常:\n" + ex.ToString());
-        //            return "{\"status\":\"Error\",\"msg\":\"查询进程时出错.可能原因:1.Pid格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\"}";
+        //            return "{\"status\":\"Error\",\"msg\":\"查询进程时出错.可能原因:1.Pid格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\",\"exception\":\"" + ex.Message + "\"}";
         //        }
         //    }
         //}
@@ -305,7 +307,7 @@ namespace SudoItApi.Controllers
         //        catch (Exception ex)
         //        {
         //            Log.SaveLog("触发异常:\n" + ex.ToString());
-        //            return "{\"status\":\"Error\",\"msg\":\"查询进程时出错.可能原因:1.名称格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\"}";
+        //            return "{\"status\":\"Error\",\"msg\":\"查询进程时出错.可能原因:1.名称格式或输入有误,导致找不到进程;2.权限不够,请尝试提权后运行.\",\"exception\":\"" + ex.Message + "\"}";
         //        }
         //    }
         //}
@@ -324,6 +326,8 @@ namespace SudoItApi.Controllers
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             Log.SaveLog(ip + "使用POST方式访问了进程模块");
+            //这里需要额外记录IP
+            //因为下面调用的是GET的方法,无法获取当前IP
             return obj.Operation switch
             {
                 "GetProcesses" => GetProcesses(obj.Password),
@@ -335,6 +339,9 @@ namespace SudoItApi.Controllers
                 _ => "{\"status\":\"Error\",\"msg\":\"未指定的操作\"}",
             };
         }
+        /// <summary>
+        /// JSON类
+        /// </summary>
         public class Json
         {
             public string Operation { get; set; }

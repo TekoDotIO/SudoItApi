@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace SudoItApi.Controllers
 {
@@ -12,19 +13,24 @@ namespace SudoItApi.Controllers
         {
             PerformanceCounter cpuCounter;
             //PerformanceCounter ramCounter;
-            cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            cpuCounter = new PerformanceCounter("Processor", "% Processor Time","_Total");
+            cpuCounter.NextValue();//获取下一结果
             //ramCounter = new PerformanceCounter("Memory", "Available MBytes");
             //PerformanceCounter diskCounter = new PerformanceCounter("PhysicalDisk", "Disk Read Bytes/sec", "_Total");
             return cpuCounter.NextValue() + "%";
+            //这里注意!一定要获取两次NextValue
+            //因为NextValue指的是上一次和这一次检查的平均值,因此第一次结果为0%
         }
         public string FullRAM;
         public string UsedRAM;
         public string FreeRAM;
+        public string CPUUsage;
         public void Get()
         {
             FullRAM = FormatSize(GetTotalPhys());
             UsedRAM = FormatSize(GetUsedPhys());
             FreeRAM = FormatSize(GetAvailPhys());
+            CPUUsage = GetCPUUsage();
         }
 
         #region 获得内存信息API
@@ -135,8 +141,8 @@ namespace SudoItApi.Controllers
         public ActionResult<string> Test()
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            Log.SaveLog(ip + " 测试了服务连通性");
-            return "{\"status\":\"服务在线\"}";
+            Log.SaveLog(ip + " 测试了服务连通性");//获取IP并加入日志
+            return "{\"status\":\"服务在线\"}";//返回结果
         }
         /// <summary>
         /// 获取操作系统,机器名称,架构,用户名,内存使用量,CPU使用率等信息
@@ -147,28 +153,43 @@ namespace SudoItApi.Controllers
         public ActionResult<string> Status(string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password))//通过Auth方法验证密码,!表示"不",即为:如果输入的密码不正确
             {
-                HttpContext.Response.StatusCode = 403;
-                Log.SaveLog(ip + " 尝试获取本机信息 ,但是他/她输入了错误的密码");
+                HttpContext.Response.StatusCode = 403;//返回403状态码
+                Log.SaveLog(ip + " 尝试获取本机信息 ,但是他/她输入了错误的密码");//记录异常行为到日志
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
             }
-            string MacName = Environment.MachineName;
-            string OSName = "";
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD)) OSName = "FreeBSD";
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) OSName = "Linux";
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) OSName = "MacOS";
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) OSName = "Windows";
-            if (OSName == "") OSName = "Unknown";
-            string OSBit = "32Bit";
-            if (Environment.Is64BitOperatingSystem) OSBit = "64Bit";
-            string UserName = Environment.UserName;
-            GetRAMUsage getRAMUsage = new GetRAMUsage();
-            getRAMUsage.Get();
-            string CPUUsage = getRAMUsage.GetCPUUsage();
-            string info = "{\n\"MacName\":\"" + MacName + "\",\n\"OS\":\"" + OSName + "\",\n\"OSBit\":\"" + OSBit + "\",\n\"UserName\":\"" + UserName + "\",\n\"FreeRAM\":\"" + getRAMUsage.FreeRAM + "\",\n\"CPUUsage\":\"" + CPUUsage.ToString() + "\"\n}";
-            Log.SaveLog(ip + "获取了设备信息");
-            return info;
+            try
+            {
+                string MacName = Environment.MachineName;
+                string OSName = "";//初始化OSName,如果去除"",即为null
+                                   //使用if判断表达式可以有效减少代码量
+                                   //if (条件表达式.true) 语句;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD)) OSName = "FreeBSD";
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) OSName = "Linux";
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) OSName = "MacOS";
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) OSName = "Windows";
+                if (OSName == "") OSName = "Unknown";
+                //如果OSName仍未被赋值,说明该系统未被IsOSPlatform收录
+                string OSBit = "32Bit";//初始化架构为32位
+                if (Environment.Is64BitOperatingSystem) OSBit = "64Bit";
+                //如果是64位操作系统,设置OSBit为64位
+                string UserName = Environment.UserName;
+                //初始化用户名
+                GetRAMUsage getRAMUsage = new GetRAMUsage();//构建新的GetRAMUsage类
+                getRAMUsage.Get();//获取RAM使用率
+                string CPUUsage = getRAMUsage.CPUUsage;
+                //获取CPU使用率
+                string info = "{\n\"MacName\":\"" + MacName + "\",\n\"OS\":\"" + OSName + "\",\n\"OSBit\":\"" + OSBit + "\",\n\"UserName\":\"" + UserName + "\",\n\"FreeRAM\":\"" + getRAMUsage.FreeRAM + "\",\n\"FullRAM\":\"" + getRAMUsage.FullRAM + "\",\n\"UsedRAM\":\"" + getRAMUsage.UsedRAM + "\",\n\"CPUUsage\":\"" + CPUUsage.ToString() + "\"\n}";
+                Log.SaveLog(ip + "获取了设备信息");
+                return info;
+                //返回词典
+            }
+            catch(Exception ex)
+            {
+                Log.SaveLog(ip + "在获取设备状态时触发异常" + ex.ToString());
+                return "{\"status\":\"Error\",\"msg\":\"不支持的体系架构或操作系统.Unsupported platform or OS.\",\"exception\":\"" + ex.Message + "\"}";
+            }
         }
     }
     #endregion

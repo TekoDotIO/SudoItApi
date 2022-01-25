@@ -44,7 +44,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的获取磁盘请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法获取磁盘.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法获取磁盘.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         #endregion
@@ -88,7 +88,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog(ip + " 尝试获取该路径的文件列表: \"" + Path + "\",但是触发了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法列出该路径索引.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}";
+                return "{\"status\":\"Exception\",\"msg\":\"无法列出该路径索引.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}";
             }
         }
         #endregion
@@ -117,7 +117,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的创建文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法创建该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法创建该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -145,7 +145,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的移动文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法移动该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法移动该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -172,7 +172,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的删除文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法删除该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法删除该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -200,7 +200,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的复制文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法复制该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法复制该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -255,7 +255,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的读取文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法读取该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法读取该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -283,7 +283,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的覆盖文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法覆盖该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法覆盖该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -311,7 +311,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的写入文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法写入该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法写入该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -340,7 +340,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的压缩文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法压缩该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法压缩该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -367,7 +367,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的下载文件请求时发生了异常:" + ex.ToString());
-                return Content("{\"status\":\"Error\",\"msg\":\"无法下载该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}");
+                return Content("{\"status\":\"Exception\",\"msg\":\"无法下载该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}");
             }
         }
         /// <summary>
@@ -396,7 +396,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的重命名文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法重命名该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法重命名该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         #endregion
@@ -425,7 +425,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的创建文件夹请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法创建该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法创建该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -453,7 +453,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的移动目录请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法移动该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法移动该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -480,7 +480,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的删除文件夹请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法删除该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法删除该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -508,7 +508,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的复制文件夹请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法复制该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法复制该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -539,7 +539,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的获取文件夹信息请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法获取该文件夹信息.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法获取该文件夹信息.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -568,7 +568,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的压缩文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法压缩该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法压缩该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         /// <summary>
@@ -627,7 +627,7 @@ namespace SudoItApi.Controllers
             catch (Exception ex)
             {
                 Log.SaveLog("在处理位于" + ip + "的重命名文件夹请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Error\",\"msg\":\"无法重命名该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\"}"; ;
+                return "{\"status\":\"Exception\",\"msg\":\"无法重命名该文件夹.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
         #endregion
