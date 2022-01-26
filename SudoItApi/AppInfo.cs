@@ -6,10 +6,10 @@
     public class AppInfo
     {
         public static string AppName = "$udo!T Api Server";
-        public static string Version = "v.1.0.0.4";
-        public static string InsideVersion = "Beta 0006";
+        public static string Version = "v.1.0.0.5";
+        public static string InsideVersion = "Alpha 2";
         public static string Copyright = "EachOther Tech. 2022";
-        public static string UpdateLog = "-增加进程模块翻页\n-增加注释";
+        public static string UpdateLog = "-增加进程模块翻页\n-文件系统新增翻页功能\n-增加注释";
     }
     /// <summary>
     /// 用户信息类(定制)

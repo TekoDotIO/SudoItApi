@@ -54,9 +54,11 @@ namespace SudoItApi.Controllers
         /// </summary>
         /// <param name="Path">路径</param>
         /// <param name="Password">密码</param>
-        /// <returns>词典</returns>
+        /// <param name="Num"></param>
+        /// <param name="Page"></param>
+        /// <returns></returns>
         [HttpGet]
-        public ActionResult<string> GetList(string Path, string Password)
+        public ActionResult<string> GetList(string Path, string Password, string Num = "all", string Page = "1")
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password))
@@ -67,9 +69,11 @@ namespace SudoItApi.Controllers
             }
             try
             {
+                Log.SaveLog(ip + " 获取了该路径的文件列表: \"" + Path + "\"");
                 string[] Files = Directory.GetFiles(Path);
                 string[] Directories = Directory.GetDirectories(Path);
-                string Dictionary = "{\n\"..\":\"Back\",\n";
+                string Dictionary = "";
+                //{\n\"..\":\"Back\",\n
                 for (int i = 0; i < Files.Length; i++)
                 {
                     string fileNow = Files[i];
@@ -80,10 +84,35 @@ namespace SudoItApi.Controllers
                     string fileNow = Directories[i];
                     Dictionary = Dictionary + "\"" + fileNow.Split("\\")[^1].Split("/")[^1] + "\":\"Direction\",\n";
                 }
-                Dictionary = Dictionary[0..^2];
-                Dictionary += "\n}";
-                Log.SaveLog(ip + " 获取了该路径的文件列表: \"" + Path + "\"");
-                return Dictionary;
+                if (Num == "all")
+                {
+                    Dictionary = "{\n\"..\":\"Back\",\n" + Dictionary[0..^2];
+                    Dictionary += "\n}";
+                    return Dictionary;
+                }
+                string[] Base = Dictionary.Split("\n");
+                int ExecutedNum = 0;//已执行次数
+                int ToNum = Convert.ToInt32(Num);//每页个数
+                int PageNum = Convert.ToInt32(Page) - 1;//页数
+                //一定要减1,因为默认页数从0开始
+                //以上两个变量要使用Convert转换为Int
+                int StartNum = PageNum * ToNum;
+                //这是PageNum页的起始项目
+                int EndNum = StartNum + ToNum;
+                //这是PageNum页的最后一个项目
+                string result = "";
+                foreach (string Project in Base)//对每个Process对象进行遍历
+                {
+                    if (ExecutedNum >= StartNum && ExecutedNum < EndNum)//植树问题,如果全部用大于等于或小于等于会多出一个
+                    {
+                        result = result + Project + "\n";
+                    }
+                    ExecutedNum++;//等同于ExecutedNum+1;
+                    //使已执行次数+1,带入下次遍历
+                }
+                result = "{\n\"..\":\"Back\",\n" + result[0..^2];
+                result += "\n}";//去除末尾","并加上终止符
+                return result;
             }
             catch (Exception ex)
             {
@@ -649,7 +678,7 @@ namespace SudoItApi.Controllers
                     string Password = obj.Password;
                     return GetDrives(Password);
                 case "GetList"://获取目录下的文件列表
-                    return GetList(obj.Path, obj.Password);
+                    return GetList(obj.Path, obj.Password, obj.Num, obj.Page);
                 #region POST文件操作
                 case "MkFile"://创建空文件
                     return MkFile(obj.Path, obj.Password);
@@ -740,6 +769,14 @@ namespace SudoItApi.Controllers
             /// 名称
             /// </summary>
             public string Name { get; set; }
+            /// <summary>
+            /// 每页项目个数
+            /// </summary>
+            public string Num { get; set; }
+            /// <summary>
+            /// 页码
+            /// </summary>
+            public string Page { get; set; }
         }
         #endregion
     }
