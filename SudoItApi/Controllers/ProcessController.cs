@@ -13,9 +13,11 @@ namespace SudoItApi.Controllers
         /// 获取所有进程
         /// </summary>
         /// <param name="Password">密码</param>
+        /// <param name="Num">每页个数 all就是不分页 可选</param>
+        /// <param name="Page">页数</param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<string> GetProcesses(string Password)
+        public ActionResult<string> GetProcesses(string Password, string Num = "all", string Page = "1")
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password))
@@ -28,13 +30,38 @@ namespace SudoItApi.Controllers
                 Log.SaveLog(ip + "尝试获取所有进程");
                 Process[] processes = Process.GetProcesses();
                 string Dictionary = "{";//构造词典
-                foreach (Process process in processes)
+                if (Num == "all")//如果是all,不需要处理页数
                 {
-                    string Name = process.ProcessName.ToString();
-                    string Pid = process.Id.ToString();
-                    Dictionary = Dictionary + "\n\"" + Name + "\":\"" + Pid + "\",";
+                    foreach (Process process in processes)//处理每个Process
+                    {
+                        string Name = process.ProcessName.ToString();
+                        string Pid = process.Id.ToString();
+                        Dictionary = Dictionary + "\n\"" + Name + "\":\"" + Pid + "\",";
+                    }
+                    Dictionary = Dictionary[0..^1] + "\n}";
+                    return Dictionary;//返回词典
                 }
-                Dictionary = Dictionary[0..^1] + "\n}";
+                int ExecutedNum = 0;//已执行次数
+                int ToNum = Convert.ToInt32(Num);//每页个数
+                int PageNum = Convert.ToInt32(Page) - 1;//页数
+                //一定要减1,因为默认页数从0开始
+                //以上两个变量要使用Convert转换为Int
+                int StartNum = PageNum * ToNum;
+                //这是PageNum页的起始项目
+                int EndNum = StartNum + ToNum;
+                //这是PageNum页的最后一个项目
+                foreach (Process process in processes)//对每个Process对象进行遍历
+                {
+                    if (ExecutedNum >= StartNum && ExecutedNum < EndNum)//植树问题,如果全部用大于等于或小于等于会多出一个
+                    {
+                        string Name = process.ProcessName.ToString();
+                        string Pid = process.Id.ToString();
+                        Dictionary = Dictionary + "\n\"" + Name + "\":\"" + Pid + "\",";//构造词典
+                    }
+                    ExecutedNum++;//等同于ExecutedNum+1;
+                    //使已执行次数+1,带入下次遍历
+                }
+                Dictionary = Dictionary[0..^1] + "\n}";//去除末尾","并加上终止符
                 return Dictionary;//返回词典
             }
         }
@@ -197,7 +224,7 @@ namespace SudoItApi.Controllers
         /// <param name="Name">进程名称</param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<string> GetPid(string Password, string Name)
+        public ActionResult<string> GetPid(string Password, string Name, string Num = "all", string Page = "1")
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password))
@@ -213,13 +240,40 @@ namespace SudoItApi.Controllers
                     Process[] Pids = Process.GetProcessesByName(Name);//通过名称获取进程集
                     //可能有多个进程,使用Process[]
                     string Dictionary = "[";
-                    foreach (Process process in Pids)
+                    //foreach (Process process in Pids)
+                    //{
+                    //    string Pid = process.Id.ToString();
+                    //    Dictionary = Dictionary + "\n\"" + Pid + "\",";
+                    //}
+                    //Dictionary = Dictionary[0..^1] + "\n]";
+                    //return Dictionary;
+                    //以上是原本的写法,仅供参考
+                    if (Num == "all")//此时不需要处理Json
                     {
-                        string Pid = process.Id.ToString();
-                        Dictionary = Dictionary + "\n\"" + Pid + "\",";
+                        foreach (Process process in Pids)//遍历每个Process对象
+                        {
+                            string Pid = process.Id.ToString();
+                            Dictionary = Dictionary + "\n\"" + Pid + "\",";
+                        }
+                        Dictionary = Dictionary[0..^1] + "\n}";
+                        return Dictionary;//返回词典
                     }
-                    Dictionary = Dictionary[0..^1] + "\n]";
-                    return Dictionary;
+                    int ExecutedNum = 0;//已执行次数
+                    int ToNum = Convert.ToInt32(Num);//每页个数
+                    int PageNum = Convert.ToInt32(Page) - 1;//页数
+                    int StartNum = PageNum * ToNum;//本页起始项目编号
+                    int EndNum = StartNum + ToNum;//本页结束项目编号
+                    foreach (Process process in Pids)//遍历Processes
+                    {
+                        if (ExecutedNum >= StartNum && ExecutedNum < EndNum)//植树问题,如果全部用大于等于或小于等于会多出一个
+                        {
+                            string Pid = process.Id.ToString();
+                            Dictionary = Dictionary + "\n\"" + Pid + "\",";
+                        }
+                        ExecutedNum++;//次数+1
+                    }
+                    Dictionary = Dictionary[0..^1] + "\n}";//去除末尾","并添加终止符
+                    return Dictionary;//返回词典
                 }
                 catch (Exception ex)
                 {
@@ -330,12 +384,12 @@ namespace SudoItApi.Controllers
             //因为下面调用的是GET的方法,无法获取当前IP
             return obj.Operation switch
             {
-                "GetProcesses" => GetProcesses(obj.Password),
+                "GetProcesses" => GetProcesses(obj.Password, obj.Num, obj.Page),
                 "KillProcessByPid" => KillProcessByPid(obj.Password, obj.Pid),
                 "KillProcessByName" => KillProcessByName(obj.Password, obj.Name),
                 "Start" => StartProcess(obj.Password, obj.Path, obj.CreateWindow, obj.Args),
                 "GetName" => GetName(obj.Password, obj.Pid),
-                "GetPid" => GetPid(obj.Password, obj.Name),
+                "GetPid" => GetPid(obj.Password, obj.Name, obj.Num, obj.Page),
                 _ => "{\"status\":\"Error\",\"msg\":\"未指定的操作\"}",
             };
         }
@@ -351,6 +405,8 @@ namespace SudoItApi.Controllers
             public string Path { get; set; }
             public string Args { get; set; }
             public string CreateWindow { get; set; }
+            public string Num { get; set; }
+            public string Page { get; set; }
         }
         #endregion
     }
