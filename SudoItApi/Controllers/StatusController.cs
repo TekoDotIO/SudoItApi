@@ -153,7 +153,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> Status(string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))//通过Auth方法验证密码,!表示"不",即为:如果输入的密码不正确
+            if (!SetAndAuth.Auth(Password, ip))//通过Auth方法验证密码,!表示"不",即为:如果输入的密码不正确
             {
                 HttpContext.Response.StatusCode = 403;//返回403状态码
                 Log.SaveLog(ip + " 尝试获取本机信息 ,但是他/她输入了错误的密码");//记录异常行为到日志

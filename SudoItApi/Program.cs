@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Threading;
 using System.IO;
 
 namespace SudoItApi
@@ -31,20 +32,77 @@ namespace SudoItApi
             Console.WriteLine("正在初始化应用程序...");
             Initializater.Initializate();
             //调用初始化,间Initializater.cs
+            Console.WriteLine("尝试运行主程序模块...");
+            Thread MvcThread = new Thread(StartMvc);
+            MvcThread.Name = "SudoItApi-MVC";
+            MvcThread.Start();
+            string Result = ReadCommand(false);
+            switch (Result)
+            {
+                case "reboot":
+                    Console.WriteLine("重启应用程序的方式不再受支持,因为此方式会导致MVC模块崩溃.");
+                    ReadCommand(true);
+                    break;
+                case "shutdown":
+                    MvcThread.Interrupt();
+                    break;
+                default:
+                    ReadCommand(true);
+                    break;
+            }
+        }
+        /// <summary>
+        /// 带初始化参数的命令模式
+        /// </summary>
+        /// <param name="Initializated">初始化状态</param>
+        public static string ReadCommand(bool Initializated)
+        {
+            if (Initializated)
+            {
+                return ReadCommand();
+            }
+            else
+            {
+                Thread.Sleep(3000);
+                Log.SaveLog("MVC控制器进入守护状态,命令模式已启动");
+                Log.SaveLog("输入Help以获取命令帮助!");
+                return ReadCommand();
+            }
+        }
+        public static string ReadCommand()
+        {
+            Console.Write(">");
+            string CommandText = Console.ReadLine();
+            Log.SaveLog("用户通过命令模式操作行输入命令:\"" + CommandText + "\"");
+            string Result = CommandReader.Execute(CommandText);
+            if (Result != "Keep") return Result;
+            ReadCommand();
+            return "";
+        }
+        /// <summary>
+        /// 启动Mvc
+        /// </summary>
+        public static void StartMvc()
+        {
             Console.WriteLine("从本地读取端口文件...");
             int Port = Convert.ToInt32(File.ReadAllText(@"./Port.txt"));
             Console.WriteLine("应用程序将运行在: *:" + Port);
             Log.SaveLog("应用程序端口号被设定为" + Port);
-            string[] PortArg = new string[] { "--urls", "http://*:" + Port };
             //指定Mvc加载时参数
             //示例脚本: dotnet xxx.dll --urls http://*:5000
             //URL需要指定为*,否则通过其他入口访问程序可能会拒绝连接请求
-            Console.WriteLine("尝试运行主程序模块...");
-            CreateHostBuilder(PortArg).Build().Run();
+            string[] PortArg = new string[] { "--urls", "http://*:" + Port };
+            try
+            {
+                CreateHostBuilder(PortArg).Build().Run();
+            }
+            catch
+            {
+                return;
+            }
             //构建Mvc模块
             //CreateHostBuilder(args).Build().Run();
         }
-
         /// <summary>
         /// 由Visual Studio生成的模块-加载Mvc
         /// </summary>

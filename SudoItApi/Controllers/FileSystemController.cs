@@ -23,7 +23,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> GetDrives(string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试获取所有磁盘 ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -61,7 +61,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> GetList(string Path, string Password, string Num = "all", string Page = "1")
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试获取该路径的文件列表: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 HttpContext.Response.StatusCode = 403;
@@ -132,7 +132,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> MkFile(string Path, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试创建该路径的文件: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -160,7 +160,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> MoveFile(string FromPath, string ToPath, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"移动到\"" + ToPath + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -187,7 +187,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> DeleteFile(string Path, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试删除该路径的文件: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -215,7 +215,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> CopyFile(string FromPath, string ToPath, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"复制到\"" + ToPath + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -242,7 +242,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> GetFileInfo(string Path, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试获取该路径的文件信息: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -271,7 +271,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> ReadFile(string Path, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试读取该路径的文件: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -298,7 +298,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> WriteFile(string Path, string Password, string Text)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试覆盖该路径的文件: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -326,7 +326,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> WriteToFile(string Path, string Password, string Text)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试写入到该路径的文件: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -355,7 +355,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> ZipFile(string FromPath, string ToPath, string Password, string Type)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"以" + Type + "压缩到\"" + ToPath + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -382,7 +382,7 @@ namespace SudoItApi.Controllers
         public ActionResult DownloadFile(string Path, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试下载该路径的文件: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return Content("{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}");
@@ -410,7 +410,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> RenameFile(string Path, string Password, string Name)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试重命名该路径的文件: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -440,7 +440,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> MkDir(string Path, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试创建该路径的文件夹: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -468,7 +468,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> MoveDir(string FromPath, string ToPath, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试将该路径的文件夹: \"" + FromPath + "\"移动到\"" + ToPath + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -495,7 +495,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> DeleteDir(string Path, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试删除该路径的文件夹: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -523,7 +523,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> CopyDir(string FromPath, string ToPath, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试将该路径的文件夹: \"" + FromPath + "\"复制到\"" + ToPath + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -550,7 +550,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> GetDirInfo(string Path, string Password)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试获取该路径的文件夹信息: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -583,7 +583,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> ZipDir(string FromPath, string ToPath, string Password, string Type)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"以" + Type + "压缩到\"" + ToPath + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -641,7 +641,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> RenameDir(string Path, string Password, string Name)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + " 尝试重命名该路径的文件夹: \"" + Path + "\" ,但是他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";

@@ -20,7 +20,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> GetProcesses(string Password, string Num = "all", string Page = "1")
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + "尝试获取所有进程,但他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -75,7 +75,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> KillProcessByPid(string Password, string Pid)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + "尝试通过Pid杀死进程" + Pid + ",但他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -106,7 +106,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> KillProcessByName(string Password, string Name)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + "尝试通过名称杀死进程" + Name + ",但他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -144,7 +144,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> StartProcess(string Password, string Path, string CreateWindow = "false", string Args = "")
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + "尝试启动进程" + Path + ",但他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -197,7 +197,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> GetName(string Password, string Pid)
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + "尝试通过Pid查找进程" + Pid + ",但他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -227,7 +227,7 @@ namespace SudoItApi.Controllers
         public ActionResult<string> GetPid(string Password, string Name, string Num = "all", string Page = "1")
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password))
+            if (!SetAndAuth.Auth(Password, ip))
             {
                 Log.SaveLog(ip + "尝试通过名称查找进程" + Name + ",但他/她输入了错误的密码");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -297,7 +297,7 @@ namespace SudoItApi.Controllers
         //public ActionResult<string> GetInfoByPid(string Password, string Pid)
         //{
         //    string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-        //    if (!SetAndAuth.Auth(Password))
+        //    if (!SetAndAuth.Auth(Password, ip))
         //    {
         //        Log.SaveLog(ip + "尝试通过Pid查询进程" + Pid + ",但他/她输入了错误的密码");
         //        return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -333,7 +333,7 @@ namespace SudoItApi.Controllers
         //public ActionResult<string> GetInfoByName(string Password, string Name)
         //{
         //    string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-        //    if (!SetAndAuth.Auth(Password))
+        //    if (!SetAndAuth.Auth(Password, ip))
         //    {
         //        Log.SaveLog(ip + "尝试通过名称查询进程" + Name + ",但他/她输入了错误的密码");
         //        return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";

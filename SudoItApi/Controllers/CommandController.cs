@@ -21,16 +21,15 @@ namespace SudoItApi.Controllers
         [HttpGet]
         public ActionResult<string> ExecuteCommand(string Command, string Password)
         {
-            if (SetAndAuth.Auth(Password))
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            if (SetAndAuth.Auth(Password, ip))
             {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
                 Log.SaveLog(ip + " 执行了命令 \"" + Command + "\"");
                 string result = Cmd.RunCmd(Command, true);
                 return result;
             }
             else
             {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
                 Log.SaveLog(ip + " 尝试执行命令 \"" + Command + "\" ,但是他/她输入了错误的密码");
                 HttpContext.Response.StatusCode = 403;
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
@@ -45,16 +44,15 @@ namespace SudoItApi.Controllers
         [HttpGet]
         public ActionResult<string> SafeExecute(string Command, string Password)
         {
-            if (SetAndAuth.Auth(Password))
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            if (SetAndAuth.Auth(Password, ip))
             {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
                 Log.SaveLog(ip + " 安全执行了 \"" + Command + "\"");
                 Cmd.RunCmd(Command, false);
                 return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
             }
             else
             {
-                string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
                 Log.SaveLog(ip + " 尝试执行命令 \"" + Command + "\" ,但是他/她输入了错误的密码");
                 HttpContext.Response.StatusCode = 403;
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
