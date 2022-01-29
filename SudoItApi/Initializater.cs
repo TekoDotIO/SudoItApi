@@ -13,11 +13,13 @@ namespace SudoItApi
         public static void Initializate()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            if (!File.Exists(@"./deletemetoreset.each"))
+            Directory.CreateDirectory("./Setting/");
+            if (!File.Exists(@"./Setting/deletemetoreset.each"))
             {
                 Console.WriteLine("\n\n\n欢迎使用SudoIt!系统检测到你是第一次运行SudoIt(或者你把程序的记忆文件吃掉了hh),因此,你需要完成几个简单的步骤,在这之后你才可以尽情享受SudoIt!");
                 Console.WriteLine("按回车键继续");
                 Console.ReadKey();
+                #region 隐私声明
                 Console.Clear();
                 Console.WriteLine("第一步");
                 Console.WriteLine("用户隐私声明");
@@ -25,15 +27,21 @@ namespace SudoItApi
                 Console.WriteLine("\n如果您理解并同意,请按回车键继续.\n如果您不同意,请退出程序.");
                 Console.ReadKey();
                 Console.Clear();
+                #endregion
+
+                #region 独立密码
                 Console.WriteLine("第二步");
                 Console.WriteLine("设置独立密码");
                 Console.WriteLine("\n\nSudoIt需要您设置一个独立密码以区分您和他人.\n请注意:您的密码应该包含大写字符,小写字符,除?&/\\=等之外的特殊字符");
                 Console.WriteLine("请设置你的密码并按下回车:");
                 string Password = Console.ReadLine();
-                File.Create(@"./Password.txt").Close();
+                File.Create(@"./Setting/Password.txt").Close();
                 //必须及时Close对象,否则写入时文件被占用
-                File.WriteAllText(@"./Password.txt", Password);
+                File.WriteAllText(@"./Setting/Password.txt", Password);
                 Console.Clear();
+                #endregion
+
+                #region 运行端口
                 Console.WriteLine("第三步");
                 Console.WriteLine("设置运行端口");
                 Console.WriteLine("\n\nSudoIt需要您设置一个运行端口以在网络中访问.\n请注意:您的端口号应该是一个0~65535之间的正整数,例如\"5000\"");
@@ -55,25 +63,38 @@ namespace SudoItApi
                     Console.ReadKey();
                     return;
                 }
-                File.Create(@"./Port.txt").Close();
+                File.Create(@"./Setting/Port.txt").Close();
                 //必须及时Close对象,否则写入时文件被占用
-                File.WriteAllText(@"./Port.txt", Port);
+                File.WriteAllText(@"./Setting/Port.txt", Port);
+                
                 Console.Clear();
-                File.Create(@"./deletemetoreset.each").Close();
+                #endregion
+
+                #region 安全设置
+                Console.WriteLine("第四步 安全防护选项\n");
+                Console.WriteLine("SudoIt的密码并不是保护数据的万全之策,密码有着被暴力破解的风险,因此,请您指定是否需要启用自动屏蔽用户.");
+                Console.WriteLine("如果您希望在连接方密码错误n次后屏蔽来自此用户的连接,请输入数字n并按下回车.\n如果您不想使用此功能,请输入0并按下回车.");
+                Console.WriteLine("如果您因多次密码错误被屏蔽连接,可以在控制台中输入unban <你的IP>或者手动清除banips目录下的屏蔽配置文件\n");
+                Console.Write("请输入您的屏蔽连接所需次数:");
+                int ErrTimes = Convert.ToInt32(Console.ReadLine());
+                File.WriteAllText("./Setting/ErrTimes.txt", ErrTimes.ToString());
+                #endregion
+
+                File.Create(@"./Setting/deletemetoreset.each").Close();
                 //创建记忆文件,防止二次(新安装)初始化
             }
-            if (!File.Exists(@"./Password.txt"))
+            if (!File.Exists(@"./Setting/Password.txt"))
             {
                 Console.WriteLine("设置独立密码");
                 Console.WriteLine("\n\nSudoIt需要您设置一个独立密码以区分您和他人.\n请注意:您的密码应该包含大写字符,小写字符,除?&/\\=等之外的特殊字符");
                 Console.WriteLine("请设置你的密码:");
                 string Password = Console.ReadLine();
-                File.Create(@"./Password.txt").Close();
+                File.Create(@"./Setting/Password.txt").Close();
                 //必须及时Close对象,否则写入时文件被占用
-                File.WriteAllText(@"./Password.txt", Password);
+                File.WriteAllText(@"./Setting/Password.txt", Password);
                 Console.Clear();
             }
-            if (!File.Exists(@"./Port.txt"))
+            if (!File.Exists(@"./Setting/Port.txt"))
             {
                 Console.WriteLine("设置运行端口");
                 Console.WriteLine("\n\nSudoIt需要您设置一个运行端口以在网络中访问.\n请注意:您的端口号应该是一个0~65535之间的正整数,例如\"5000\"");
@@ -93,10 +114,20 @@ namespace SudoItApi
                     Console.ReadKey();
                     return;
                 }
-                File.Create(@"./Port.txt").Close();
+                File.Create(@"./Setting/Port.txt").Close();
                 //必须及时Close对象,否则写入时文件被占用
-                File.WriteAllText(@"./Port.txt", Port);
+                File.WriteAllText(@"./Setting/Port.txt", Port);
                 Console.Clear();
+            }
+            if (!File.Exists("./Setting/ErrTimes.txt"))
+            {
+                Console.Clear();
+                Console.WriteLine("SudoIt的密码并不是保护数据的万全之策,密码有着被暴力破解的风险,因此,请您指定是否需要启用自动屏蔽用户.");
+                Console.WriteLine("如果您希望在连接方密码错误n次后屏蔽来自此用户的连接,请输入数字n并按下回车.\n如果您不想使用此功能,请输入0并按下回车.");
+                Console.WriteLine("如果您因多次密码错误被屏蔽连接,可以在控制台中输入unban <你的IP>或者手动清除banips目录下的屏蔽配置文件\n");
+                Console.Write("请输入您的屏蔽连接所需次数:");
+                int ErrTimes = Convert.ToInt32(Console.ReadLine());
+                File.WriteAllText("./Setting/ErrTimes.txt", ErrTimes.ToString());
             }
             Console.WriteLine("初始化成功");
             Log.SaveLog("初始化已完成");

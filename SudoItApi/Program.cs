@@ -33,8 +33,10 @@ namespace SudoItApi
             Initializater.Initializate();
             //调用初始化,间Initializater.cs
             Console.WriteLine("尝试运行主程序模块...");
-            Thread MvcThread = new Thread(StartMvc);
-            MvcThread.Name = "SudoItApi-MVC";
+            Thread MvcThread = new Thread(StartMvc)
+            {
+                Name = "SudoItApi-MVC"
+            };
             MvcThread.Start();
             string Result = ReadCommand(false);
             switch (Result)
@@ -85,7 +87,7 @@ namespace SudoItApi
         public static void StartMvc()
         {
             Console.WriteLine("从本地读取端口文件...");
-            int Port = Convert.ToInt32(File.ReadAllText(@"./Port.txt"));
+            int Port = Convert.ToInt32(File.ReadAllText(@"./Setting/Port.txt"));
             Console.WriteLine("应用程序将运行在: *:" + Port);
             Log.SaveLog("应用程序端口号被设定为" + Port);
             //指定Mvc加载时参数
