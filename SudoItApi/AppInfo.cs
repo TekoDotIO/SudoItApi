@@ -5,7 +5,7 @@
     /// </summary>
     public class AppInfo
     {
-        public static string AppName = "$udo!T Api Server";
+        public static string AppName = "$udo!T-Api-Server";
         public static string Version = "v.1.0.0.5";
         public static string InsideVersion = "Alpha 2";
         public static string Copyright = "EachOther Tech. 2022";
