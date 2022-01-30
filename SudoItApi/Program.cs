@@ -75,7 +75,6 @@ namespace SudoItApi
         {
             Console.Write(">");
             string CommandText = Console.ReadLine();
-            Log.SaveLog("用户通过命令模式操作行输入命令:\"" + CommandText + "\"");
             string Result = CommandReader.Execute(CommandText);
             if (Result != "Keep") return Result;
             ReadCommand();
