@@ -14,6 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Setting\**" />
+    <Content Remove="Setting\**" />
+    <EmbeddedResource Remove="Setting\**" />
+    <None Remove="Setting\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="deletemetoreset.each" />
     <None Remove="Password.txt" />
     <None Remove="Port.txt" />

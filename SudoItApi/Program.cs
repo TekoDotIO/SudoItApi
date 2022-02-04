@@ -32,6 +32,8 @@ namespace SudoItApi
             Console.WriteLine("正在初始化应用程序...");
             Initializater.Initializate();
             //调用初始化,间Initializater.cs
+            Plugins.InitializatePlugins();
+            Plugins.ReportPlugins();
             Console.WriteLine("尝试运行主程序模块...");
             Thread MvcThread = new Thread(StartMvc)
             {

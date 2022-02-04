@@ -8,6 +8,9 @@ namespace SudoItApi
         public static void InitializatePlugins()
         {
             Directory.CreateDirectory("./Plugins/");
+            Directory.CreateDirectory("./Plugins/POST-Methods/");//需要POST数据的自定义方法
+            Directory.CreateDirectory("./Plugins/GET-Methods/");//只需GET数据的自定义方法
+            Directory.CreateDirectory("./Plugins/InsideProcessor/");//对内部方法结果进行修改的方法
             string[] PluginList = Directory.GetFiles("./Plugins/");
             string Args = "--Initializate --Version " + AppInfo.Version + " --AppName " + AppInfo.AppName;
             //如:"Plugin.exe --Initializate --Version v.1.0.0.4 --AppName $udo!T-Api-Server"
@@ -25,6 +28,8 @@ namespace SudoItApi
             }
             foreach (string PluginName in PluginList)
             {
+                string Name = PluginName.Split("\\")[^1].Split("/")[^1];
+                Log.SaveLog("开始加载插件" + Name);
                 Process pluginInitializater = new Process();
                 pluginInitializater.StartInfo.FileName = PluginName;
                 pluginInitializater.StartInfo.CreateNoWindow = true;
@@ -35,7 +40,6 @@ namespace SudoItApi
                 pluginInitializater.Start();
                 pluginInitializater.WaitForExit();
                 string Output = pluginInitializater.StandardOutput.ReadToEnd();
-                string Name = PluginName.Split("\\")[^1].Split("/")[^1];
                 Log.SaveLog("插件" + Name + "初始化完成.来自插件的信息:");
                 Log.SaveLog(Output);
             }
@@ -66,6 +70,20 @@ namespace SudoItApi
             Log.SaveLog("\n已加载的POST类插件所提供的方法有:\n" + POST_Methods);
             Log.SaveLog("\n已加载的GET类插件所提供的方法有:\n" + GET_Methods);
             Log.SaveLog("\n已加载的修改器插件所属目录有:\n" + Inside_Methods);
+        }
+        public static string[] GetApis()
+        {
+            Directory.CreateDirectory("./Plugins/");
+            Directory.CreateDirectory("./Plugins/GET-Methods/");//只需GET数据的自定义方法
+            string[] PluginList = Directory.GetFiles("./Plugins/GET-Methods/");
+            string[] NameList = new string[PluginList.Length];
+            int num = 0;
+            foreach (string Path in PluginList)
+            {
+                NameList[num] = Path.Split("\\")[^1].Split("/")[^1];
+                num++;
+            }
+            return NameList;
         }
     }
 }
