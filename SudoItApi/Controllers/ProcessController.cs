@@ -398,14 +398,41 @@ namespace SudoItApi.Controllers
         /// </summary>
         public class Json
         {
+            /// <summary>
+            /// 操作命令
+            /// </summary>
             public string Operation { get; set; }
+            /// <summary>
+            /// 密码
+            /// </summary>
             public string Password { get; set; }
+            /// <summary>
+            /// 进程PID
+            /// </summary>
             public string Pid { get; set; }
+            /// <summary>
+            /// 名称
+            /// </summary>
             public string Name { get; set; }
+            /// <summary>
+            /// 路径
+            /// </summary>
             public string Path { get; set; }
+            /// <summary>
+            /// 参数
+            /// </summary>
             public string Args { get; set; }
+            /// <summary>
+            /// 是否创建窗口
+            /// </summary>
             public string CreateWindow { get; set; }
+            /// <summary>
+            /// 每页个数
+            /// </summary>
             public string Num { get; set; }
+            /// <summary>
+            /// 页码
+            /// </summary>
             public string Page { get; set; }
         }
         #endregion

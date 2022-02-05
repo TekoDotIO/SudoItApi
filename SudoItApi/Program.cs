@@ -73,6 +73,10 @@ namespace SudoItApi
                 return ReadCommand();
             }
         }
+        /// <summary>
+        /// 命令读取器
+        /// </summary>
+        /// <returns></returns>
         public static string ReadCommand()
         {
             Console.Write(">");

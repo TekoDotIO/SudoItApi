@@ -3,6 +3,9 @@ using System.IO;
 
 namespace SudoItApi
 {
+    /// <summary>
+    /// 设置与验证密码类
+    /// </summary>
     public class SetAndAuth
     {
         /// <summary>

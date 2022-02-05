@@ -7,8 +7,15 @@ using System.Threading;
 namespace SudoItApi.Controllers
 {
     #region 内存使用率模块
+    /// <summary>
+    /// 获取使用率
+    /// </summary>
     public class GetRAMUsage
     {
+        /// <summary>
+        /// 获取CPU使用率
+        /// </summary>
+        /// <returns></returns>
         public string GetCPUUsage()
         {
             PerformanceCounter cpuCounter;

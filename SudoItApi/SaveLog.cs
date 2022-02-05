@@ -3,6 +3,9 @@ using System.IO;
 
 namespace SudoItApi
 {
+    /// <summary>
+    /// 日志类
+    /// </summary>
     public class Log
     {
         /// <summary>

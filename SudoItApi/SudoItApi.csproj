@@ -11,6 +11,10 @@
     <Copyright>Each. Tech. with XiaoHeiStudio (C) 2022</Copyright>
     <AssemblyVersion>1.0.0.2</AssemblyVersion>
     <FileVersion>1.0.0.2</FileVersion>
+    <ApplicationIcon>sudoit.ico</ApplicationIcon>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <PackageIcon>sudoitlogoc.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +28,17 @@
     <None Remove="deletemetoreset.each" />
     <None Remove="Password.txt" />
     <None Remove="Port.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="sudoit.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="E:\logo\sudoitlogoc.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

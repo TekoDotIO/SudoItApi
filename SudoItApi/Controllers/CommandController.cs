@@ -86,10 +86,22 @@ namespace SudoItApi.Controllers
                     return "{\"status\":\"Error\",\"msg\":\"未指定是否等待返回值(WaitForExit)\"}";
             }
         }
+        /// <summary>
+        /// JSON对象
+        /// </summary>
         public class Json
         {
+            /// <summary>
+            /// 是否等待返回
+            /// </summary>
             public string WaitForExit { get; set; }
+            /// <summary>
+            /// 命令
+            /// </summary>
             public string Command { get; set; }
+            /// <summary>
+            /// 密码
+            /// </summary>
             public string Password { get; set; }
         }
         #endregion

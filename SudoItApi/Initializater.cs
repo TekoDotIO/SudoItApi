@@ -5,6 +5,9 @@ using System.Net.NetworkInformation;
 
 namespace SudoItApi
 {
+    /// <summary>
+    /// 初始化类
+    /// </summary>
     public class Initializater
     {
         /// <summary>

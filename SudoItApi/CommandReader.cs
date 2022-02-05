@@ -3,8 +3,16 @@ using System.IO;
 
 namespace SudoItApi
 {
+    /// <summary>
+    /// Shell指令类
+    /// </summary>
     public class CommandReader
     {
+        /// <summary>
+        /// 执行命令
+        /// </summary>
+        /// <param name="Command">命令文本</param>
+        /// <returns></returns>
         public static string Execute(string Command)
         {
             string[] Cmds = Command.Split(' ');

@@ -3,6 +3,9 @@ using System;
 
 namespace SudoItApi
 {
+    /// <summary>
+    /// 7z压缩操作类
+    /// </summary>
     public class SevenZipApi
     {
         /// <summary>

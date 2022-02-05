@@ -3,8 +3,14 @@ using System.IO;
 
 namespace SudoItApi
 {
+    /// <summary>
+    /// 插件类
+    /// </summary>
     public class Plugins
     {
+        /// <summary>
+        /// 初始化所有插件
+        /// </summary>
         public static void InitializatePlugins()
         {
             Directory.CreateDirectory("./Plugins/");
@@ -45,6 +51,9 @@ namespace SudoItApi
             }
             Log.SaveLog("插件已全部加载完成.");
         }
+        /// <summary>
+        /// 输出插件列表
+        /// </summary>
         public static void ReportPlugins()
         {
             Directory.CreateDirectory("./Plugins/");
@@ -71,11 +80,33 @@ namespace SudoItApi
             Log.SaveLog("\n已加载的GET类插件所提供的方法有:\n" + GET_Methods);
             Log.SaveLog("\n已加载的修改器插件所属目录有:\n" + Inside_Methods);
         }
+        /// <summary>
+        /// 获取所有GET插件
+        /// </summary>
+        /// <returns></returns>
         public static string[] GetApis()
         {
             Directory.CreateDirectory("./Plugins/");
             Directory.CreateDirectory("./Plugins/GET-Methods/");//只需GET数据的自定义方法
             string[] PluginList = Directory.GetFiles("./Plugins/GET-Methods/");
+            string[] NameList = new string[PluginList.Length];
+            int num = 0;
+            foreach (string Path in PluginList)
+            {
+                NameList[num] = Path.Split("\\")[^1].Split("/")[^1];
+                num++;
+            }
+            return NameList;
+        }
+        /// <summary>
+        /// 获取所有POST插件
+        /// </summary>
+        /// <returns></returns>
+        public static string[] PostApis()
+        {
+            Directory.CreateDirectory("./Plugins/");
+            Directory.CreateDirectory("./Plugins/POST-Methods/");//只需GET数据的自定义方法
+            string[] PluginList = Directory.GetFiles("./Plugins/POST-Methods/");
             string[] NameList = new string[PluginList.Length];
             int num = 0;
             foreach (string Path in PluginList)

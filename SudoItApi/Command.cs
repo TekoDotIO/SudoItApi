@@ -3,6 +3,9 @@
 namespace SudoItApi
 {
     //Cmd类来自互联网
+    /// <summary>
+    /// Cmd命令类
+    /// </summary>
     public class Cmd
     {
         private static readonly string CmdPath = @"C:\Windows\System32\cmd.exe";
