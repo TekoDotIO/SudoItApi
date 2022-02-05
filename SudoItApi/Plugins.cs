@@ -93,7 +93,7 @@ namespace SudoItApi
             int num = 0;
             foreach (string Path in PluginList)
             {
-                NameList[num] = Path.Split("\\")[^1].Split("/")[^1];
+                NameList[num] = Path.Split("\\")[^1].Split("/")[^1].Replace(".txt", "");
                 num++;
             }
             return NameList;
@@ -105,16 +105,70 @@ namespace SudoItApi
         public static string[] PostApis()
         {
             Directory.CreateDirectory("./Plugins/");
-            Directory.CreateDirectory("./Plugins/POST-Methods/");//只需GET数据的自定义方法
+            Directory.CreateDirectory("./Plugins/POST-Methods/");//POST数据的自定义方法
             string[] PluginList = Directory.GetFiles("./Plugins/POST-Methods/");
             string[] NameList = new string[PluginList.Length];
             int num = 0;
             foreach (string Path in PluginList)
             {
-                NameList[num] = Path.Split("\\")[^1].Split("/")[^1];
+                NameList[num] = Path.Split("\\")[^1].Split("/")[^1].Replace(".txt", "");
                 num++;
             }
             return NameList;
+        }
+        /// <summary>
+        /// 获取所有内部修改器插件
+        /// </summary>
+        /// <returns></returns>
+        public static string[] InsideApis()
+        {
+            Directory.CreateDirectory("./Plugins/");
+            Directory.CreateDirectory("./Plugins/InsideProcessor/");//修改数据的自定义方法
+            string[] PluginList = Directory.GetFiles("./Plugins/InsideProcessor/");
+            string[] NameList = new string[PluginList.Length];
+            int num = 0;
+            foreach (string Path in PluginList)
+            {
+                NameList[num] = Path.Split("\\")[^1].Split("/")[^1].Replace(".txt", "");
+                num++;
+            }
+            return NameList;
+        }
+        /// <summary>
+        /// 处理结果
+        /// </summary>
+        /// <param name="Method">方法</param>
+        /// <param name="Result">原结果</param>
+        /// <returns></returns>
+        public static string ProcessResult(string Method, string Result)
+        {
+            string[] Apis = InsideApis(); 
+            if (Apis.Length == 0)
+            {
+                return Result;
+            }
+            foreach (string Api in Apis)
+            {
+                Process PluginProcess = new Process();
+                string Processor = File.ReadAllText("./Plugins/InsideProcessor/" + Api + ".txt");
+                PluginProcess.StartInfo.FileName = "./Plugins/" + Processor;
+                PluginProcess.StartInfo.CreateNoWindow = true;
+                PluginProcess.StartInfo.Arguments = "--Method " + Method + " --Data \"" + Result + "\"";
+                string Output;
+                string[] Outputs;
+                PluginProcess.StartInfo.RedirectStandardInput = true; //接受来自调用程序的输入信息
+                PluginProcess.StartInfo.RedirectStandardOutput = true; //由调用程序获取输出信息
+                PluginProcess.StartInfo.RedirectStandardError = true; //重定向标准错误输出
+                PluginProcess.Start();
+                PluginProcess.WaitForExit();
+                Output = PluginProcess.StandardOutput.ReadToEnd();
+                Outputs = Output.Split("\n");
+                Log.SaveLog("插件修改方法" + Method + "成功被调用,所属插件:" + Api);
+                Log.SaveLog("插件返回给用户的信息:" + Outputs[0]);
+                Log.SaveLog("插件返回给控制台的信息:" + Outputs[1]);
+                Result = Output;
+            }
+            return Result;
         }
     }
 }

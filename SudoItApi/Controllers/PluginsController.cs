@@ -18,9 +18,10 @@ namespace SudoItApi.Controllers
         /// <param name="Method">方法</param>
         /// <param name="Password">密码</param>
         /// <param name="Args">参数</param>
+        /// <param name="WaitForResult">是否等待返回</param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<string> Get(string Method, string Password, string Args = "")
+        public ActionResult<string> Get(string Method, string Password, string Args = "", string WaitForResult = "False")
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password, ip))
@@ -40,17 +41,35 @@ namespace SudoItApi.Controllers
                 PluginProcess.StartInfo.FileName = "./Plugins/" + Processor;
                 PluginProcess.StartInfo.CreateNoWindow = true;
                 PluginProcess.StartInfo.Arguments = "--Method " + Method + " --HttpMethod GET --Args \"" + Args + "\"";
-                PluginProcess.StartInfo.RedirectStandardInput = true; //接受来自调用程序的输入信息
-                PluginProcess.StartInfo.RedirectStandardOutput = true; //由调用程序获取输出信息
-                PluginProcess.StartInfo.RedirectStandardError = true; //重定向标准错误输出
-                PluginProcess.Start();
-                PluginProcess.WaitForExit();
-                string Output = PluginProcess.StandardOutput.ReadToEnd();
-                string[] Outputs = Output.Split("\n");
-                Log.SaveLog("插件方法" + Method + "成功被调用,参数:" + Args);
-                Log.SaveLog("插件返回给用户的信息:" + Outputs[0]);
-                Log.SaveLog("插件返回给控制台的信息:" + Outputs[1]);
-                return "{\"status\":\"OK\",\"msg\":\"" + Output + "\"}";
+                string Output;
+                string[] Outputs;
+                switch (WaitForResult)
+                {
+                    case "False":
+                    case "0":
+                    case "false":
+                    case "FALSE":
+                        PluginProcess.Start();
+                        Log.SaveLog("插件方法" + Method + "成功被调用,参数:" + Args);
+                        return "{\"status\":\"OK\",\"msg\":\"成功调用\"}";
+                    case "True":
+                    case "1":
+                    case "true":
+                    case "TRUE":
+                        PluginProcess.StartInfo.RedirectStandardInput = true; //接受来自调用程序的输入信息
+                        PluginProcess.StartInfo.RedirectStandardOutput = true; //由调用程序获取输出信息
+                        PluginProcess.StartInfo.RedirectStandardError = true; //重定向标准错误输出
+                        PluginProcess.Start();
+                        PluginProcess.WaitForExit();
+                        Output = PluginProcess.StandardOutput.ReadToEnd();
+                        Outputs = Output.Split("\n");
+                        Log.SaveLog("插件方法" + Method + "成功被调用,参数:" + Args);
+                        Log.SaveLog("插件返回给用户的信息:" + Outputs[0]);
+                        Log.SaveLog("插件返回给控制台的信息:" + Outputs[1]);
+                        return "{\"status\":\"OK\",\"msg\":\"" + Output + "\"}";
+                    default:
+                        return "{\"status\":\"Error\",\"msg\":\"未指定的是否获取返回值.\"}";
+                }
             }
             catch (Exception ex)
             {
@@ -85,17 +104,35 @@ namespace SudoItApi.Controllers
                 PluginProcess.StartInfo.FileName = "./Plugins/" + Processor;
                 PluginProcess.StartInfo.CreateNoWindow = true;
                 PluginProcess.StartInfo.Arguments = "--Method " + obj.Method + " --HttpMethod POST --Args \"" + obj.Args + "\"";
-                PluginProcess.StartInfo.RedirectStandardInput = true; //接受来自调用程序的输入信息
-                PluginProcess.StartInfo.RedirectStandardOutput = true; //由调用程序获取输出信息
-                PluginProcess.StartInfo.RedirectStandardError = true; //重定向标准错误输出
-                PluginProcess.Start();
-                PluginProcess.WaitForExit();
-                string Output = PluginProcess.StandardOutput.ReadToEnd();
-                string[] Outputs = Output.Split("\n");
-                Log.SaveLog("插件方法" + obj.Method + "成功被调用,参数:" + obj.Args);
-                Log.SaveLog("插件返回给用户的信息:" + Outputs[0]);
-                Log.SaveLog("插件返回给控制台的信息:" + Outputs[1]);
-                return "{\"status\":\"OK\",\"msg\":\"" + Output + "\"}";
+                string Output;
+                string[] Outputs;
+                switch (obj.WaitForResult)
+                {
+                    case "False":
+                    case "0":
+                    case "false":
+                    case "FALSE":
+                        PluginProcess.Start();
+                        Log.SaveLog("插件方法" + obj.Method + "成功被调用,参数:" + obj.Args);
+                        return "{\"status\":\"OK\",\"msg\":\"成功调用\"}";
+                    case "True":
+                    case "1":
+                    case "true":
+                    case "TRUE":
+                        PluginProcess.StartInfo.RedirectStandardInput = true; //接受来自调用程序的输入信息
+                        PluginProcess.StartInfo.RedirectStandardOutput = true; //由调用程序获取输出信息
+                        PluginProcess.StartInfo.RedirectStandardError = true; //重定向标准错误输出
+                        PluginProcess.Start();
+                        PluginProcess.WaitForExit();
+                        Output = PluginProcess.StandardOutput.ReadToEnd();
+                        Outputs = Output.Split("\n");
+                        Log.SaveLog("插件方法" + obj.Method + "成功被调用,参数:" + obj.Args);
+                        Log.SaveLog("插件返回给用户的信息:" + Outputs[0]);
+                        Log.SaveLog("插件返回给控制台的信息:" + Outputs[1]);
+                        return "{\"status\":\"OK\",\"msg\":\"" + Output + "\"}";
+                    default:
+                        return "{\"status\":\"Error\",\"msg\":\"未指定的是否获取返回值.\"}";
+                }
             }
             catch (Exception ex)
             {
@@ -121,6 +158,10 @@ namespace SudoItApi.Controllers
             /// 参数
             /// </summary>
             public string Args { get; set; }
+            /// <summary>
+            /// 是否等待返回值
+            /// </summary>
+            public string WaitForResult { get; set; }
         }
     }
 }

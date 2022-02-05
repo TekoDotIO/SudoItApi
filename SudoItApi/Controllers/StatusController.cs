@@ -198,7 +198,8 @@ namespace SudoItApi.Controllers
         {
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             Log.SaveLog(ip + " 测试了服务连通性");//获取IP并加入日志
-            return "{\"status\":\"服务在线\"}";//返回结果
+            string Result = "{\"status\":\"服务在线\"}";//返回结果
+            return Plugins.ProcessResult("Test", Result);
         }
         /// <summary>
         /// 获取操作系统,机器名称,架构,用户名,内存使用量,CPU使用率等信息
@@ -238,7 +239,7 @@ namespace SudoItApi.Controllers
                 //获取CPU使用率
                 string info = "{\n\"MacName\":\"" + MacName + "\",\n\"OS\":\"" + OSName + "\",\n\"OSBit\":\"" + OSBit + "\",\n\"UserName\":\"" + UserName + "\",\n\"FreeRAM\":\"" + getRAMUsage.FreeRAM + "\",\n\"FullRAM\":\"" + getRAMUsage.FullRAM + "\",\n\"UsedRAM\":\"" + getRAMUsage.UsedRAM + "\",\n\"CPUUsage\":\"" + CPUUsage.ToString() + "\"\n}";
                 Log.SaveLog(ip + "获取了设备信息");
-                return info;
+                return Plugins.ProcessResult("Status", info);
                 //返回词典
             }
             catch(Exception ex)

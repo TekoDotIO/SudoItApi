@@ -65,7 +65,7 @@ namespace SudoItApi.Controllers
                     //使已执行次数+1,带入下次遍历
                 }
                 Dictionary = Dictionary[0..^1] + "\n}";//去除末尾","并加上终止符
-                return Dictionary;//返回词典
+                return Plugins.ProcessResult("GetProcesses", Dictionary);//返回词典
             }
         }
         /// <summary>
@@ -90,7 +90,8 @@ namespace SudoItApi.Controllers
                 {
                     Process process = Process.GetProcessById(Convert.ToInt32(Pid));//通过Pid查找进程
                     process.Kill();//杀死指定进程
-                    return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
+                    string Result = "{\"status\":\"OK\",\"msg\":\"Done.\"}";
+                    return Plugins.ProcessResult("KillProcessByPid", Result);
                 }
                 catch(Exception ex)
                 {
@@ -126,7 +127,8 @@ namespace SudoItApi.Controllers
                         process.Kill();
                         Log.SaveLog("成功杀死了位于Pid" + process.Id + "的进程" + Name);
                     }
-                    return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
+                    string Result = "{\"status\":\"OK\",\"msg\":\"Done.\"}";
+                    return Plugins.ProcessResult("KillProcessByName", Result);
                 }
                 catch (Exception ex)
                 {
@@ -181,7 +183,8 @@ namespace SudoItApi.Controllers
                         process.StartInfo.Arguments = Args;
                     }
                     process.Start();//启动进程
-                    return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
+                    string Result = "{\"status\":\"OK\",\"msg\":\"Done.\"}";
+                    return Plugins.ProcessResult("StartProcess", Result);
                 }
                 catch (Exception ex)
                 {
@@ -211,7 +214,8 @@ namespace SudoItApi.Controllers
                 try
                 {
                     string Name = Process.GetProcessById(Convert.ToInt32(Pid)).ProcessName;//获取指定Pid的进程
-                    return "{\"status\":\"OK\",\"info\":\"" + Name + "\"}";
+                    string Result = "{\"status\":\"OK\",\"info\":\"" + Name + "\"}";
+                    return Plugins.ProcessResult("GetName", Result);
                 }
                 catch (Exception ex)
                 {
@@ -278,7 +282,7 @@ namespace SudoItApi.Controllers
                         ExecutedNum++;//次数+1
                     }
                     Dictionary = Dictionary[0..^1] + "\n}";//去除末尾","并添加终止符
-                    return Dictionary;//返回词典
+                    return Plugins.ProcessResult("GetPid", Dictionary);//返回词典
                 }
                 catch (Exception ex)
                 {
