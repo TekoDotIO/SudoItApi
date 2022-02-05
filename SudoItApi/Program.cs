@@ -6,6 +6,9 @@ using System.IO;
 
 namespace SudoItApi
 {
+    /// <summary>
+    /// 主类
+    /// </summary>
     public class Program
     {
         /// <summary>

@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace SudoItApi.Controllers
 {
+    /// <summary>
+    /// 进程类
+    /// </summary>
     [ApiController]
     [Route("SudoIt/[controller]/[action]")]
     public class ProcessController : Controller
@@ -138,7 +141,7 @@ namespace SudoItApi.Controllers
         /// <param name="Password">密码</param>
         /// <param name="Path">文件路径</param>
         /// <param name="CreateWindow">是否创建窗口(可选,默认否)</param>
-        /// <param name="args">启动参数(可选)</param>
+        /// <param name="Args">启动参数(可选)</param>
         /// <returns></returns>
         [HttpGet]
         public ActionResult<string> StartProcess(string Password, string Path, string CreateWindow = "false", string Args = "")
@@ -222,6 +225,8 @@ namespace SudoItApi.Controllers
         /// </summary>
         /// <param name="Password">密码</param>
         /// <param name="Name">进程名称</param>
+        /// <param name="Num">每页项目</param>
+        /// <param name="Page">页码</param>
         /// <returns></returns>
         [HttpGet]
         public ActionResult<string> GetPid(string Password, string Name, string Num = "all", string Page = "1")

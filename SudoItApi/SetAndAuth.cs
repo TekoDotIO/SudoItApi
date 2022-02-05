@@ -12,6 +12,7 @@ namespace SudoItApi
         /// 校验密码
         /// </summary>
         /// <param name="Password">密码</param>
+        /// <param name="ip">用户IP地址</param>
         /// <returns></returns>
         public static bool Auth(string Password, string ip)
         {

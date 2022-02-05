@@ -28,10 +28,25 @@ namespace SudoItApi.Controllers
             //这里注意!一定要获取两次NextValue
             //因为NextValue指的是上一次和这一次检查的平均值,因此第一次结果为0%
         }
+        /// <summary>
+        /// 全部内存大小
+        /// </summary>
         public string FullRAM;
+        /// <summary>
+        /// 已使用
+        /// </summary>
         public string UsedRAM;
+        /// <summary>
+        /// 空闲内存
+        /// </summary>
         public string FreeRAM;
+        /// <summary>
+        /// CPU使用率
+        /// </summary>
         public string CPUUsage;
+        /// <summary>
+        /// 获取使用情况
+        /// </summary>
         public void Get()
         {
             FullRAM = FormatSize(GetTotalPhys());
@@ -41,22 +56,57 @@ namespace SudoItApi.Controllers
         }
 
         #region 获得内存信息API
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mi"></param>
+        /// <returns></returns>
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GlobalMemoryStatusEx(ref MEMORY_INFO mi);
 
         //定义内存的信息结构
+        /// <summary>
+        /// 
+        /// </summary>
         [StructLayout(LayoutKind.Sequential)]
         public struct MEMORY_INFO
         {
+            /// <summary>
+            /// 当前结构体大小
+            /// </summary>
             public uint dwLength; //当前结构体大小
+            /// <summary>
+            /// 当前内存使用率
+            /// </summary>
             public uint dwMemoryLoad; //当前内存使用率
+            /// <summary>
+            /// 总计物理内存大小
+            /// </summary>
             public ulong ullTotalPhys; //总计物理内存大小
+            /// <summary>
+            /// 可用物理内存大小
+            /// </summary>
             public ulong ullAvailPhys; //可用物理内存大小
+            /// <summary>
+            /// 总计交换文件大小
+            /// </summary>
             public ulong ullTotalPageFile; //总计交换文件大小
+            /// <summary>
+            /// 总计交换文件大小
+            /// </summary>
             public ulong ullAvailPageFile; //总计交换文件大小
+            /// <summary>
+            /// 总计虚拟内存大小
+            /// </summary>
             public ulong ullTotalVirtual; //总计虚拟内存大小
+            /// <summary>
+            /// 可用虚拟内存大小
+            /// </summary>
             public ulong ullAvailVirtual; //可用虚拟内存大小
+            /// <summary>
+            /// 0
+            /// </summary>
             public ulong ullAvailExtendedVirtual; //保留 这个值始终为0
         }
         #endregion
@@ -123,7 +173,6 @@ namespace SudoItApi.Controllers
         /// <summary>
         /// 获得当前总计物理内存大小
         /// </summary>
-        /// <returns&amp;gt;总计物理内存大小（B）&amp;lt;/returns&amp;gt;
         public static ulong GetTotalPhys()
         {
             MEMORY_INFO mi = GetMemoryStatus();
