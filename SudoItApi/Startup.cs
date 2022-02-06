@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+ï»¿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,12 +7,12 @@ using Microsoft.Extensions.Hosting;
 namespace SudoItApi
 {
     /// <summary>
-    /// ÓÉMVC×Ô¶¯Éú³ÉµÄ´úÂëÀà
+    /// ç”±MVCè‡ªåŠ¨ç”Ÿæˆçš„ä»£ç ç±»
     /// </summary>
     public class Startup
     {
         /// <summary>
-        /// Æô¶¯
+        /// å¯åŠ¨
         /// </summary>
         /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
@@ -20,13 +20,13 @@ namespace SudoItApi
             Configuration = configuration;
         }
         /// <summary>
-        /// ÓÉMVC×Ô¶¯Éú³ÉµÄ´úÂë
+        /// ç”±MVCè‡ªåŠ¨ç”Ÿæˆçš„ä»£ç 
         /// </summary>
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         /// <summary>
-        /// ÓÉMVC×Ô¶¯Éú³ÉµÄ´úÂë
+        /// ç”±MVCè‡ªåŠ¨ç”Ÿæˆçš„ä»£ç 
         /// </summary>
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
@@ -36,7 +36,7 @@ namespace SudoItApi
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// <summary>
-        /// ÓÉMVC×Ô¶¯Éú³ÉµÄ´úÂë
+        /// ç”±MVCè‡ªåŠ¨ç”Ÿæˆçš„ä»£ç 
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
