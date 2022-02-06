@@ -3,14 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject></StartupObject>
-    <Version>1.0.0.2</Version>
+    <Version>1.0.1.0</Version>
     <Authors>Fengye1003,zxBai</Authors>
     <Company>EachTech.,XiaoHei Studio</Company>
     <Product>SudoItApi-Server</Product>
     <Description>The server part of SudoIt Service.</Description>
     <Copyright>Each. Tech. with XiaoHeiStudio (C) 2022</Copyright>
-    <AssemblyVersion>1.0.0.2</AssemblyVersion>
-    <FileVersion>1.0.0.2</FileVersion>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
     <ApplicationIcon>sudoit.ico</ApplicationIcon>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>

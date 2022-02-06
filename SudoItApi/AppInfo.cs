@@ -12,11 +12,11 @@
         /// <summary>
         /// 版本号
         /// </summary>
-        public static string Version = "v.1.0.0.5";
+        public static string Version = "v.1.0.1.0";
         /// <summary>
         /// 内部版本
         /// </summary>
-        public static string InsideVersion = "Alpha 2";
+        public static string InsideVersion = "Release I";
         /// <summary>
         /// 版权信息
         /// </summary>
@@ -24,7 +24,7 @@
         /// <summary>
         /// 更新日志
         /// </summary>
-        public static string UpdateLog = "-增加进程模块翻页\n-文件系统新增翻页功能\n-增加注释";
+        public static string UpdateLog = "-修复了密码错误引发的异常\n-添加插件支持\n-改进初始化模块\n-支持自定义密码错误容忍次数\n-添加应用图标\n-删除不必要的包\n-将日志整合到Log目录下\n-新增命令行线程\n\n\n注意:7z压缩模块因跨平台兼容性低已被删除,届时所有使用压缩文件模块的方法无法使用,请知悉.";
     }
     /// <summary>
     /// 用户信息类(定制)
