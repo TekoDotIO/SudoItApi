@@ -9,7 +9,6 @@ namespace SudoItApi
     /// </summary>
     public class CommandReader
     {
-
         /// <summary>
         /// 执行命令
         /// </summary>
@@ -26,7 +25,7 @@ namespace SudoItApi
             HelpTexts[4] = "ban [需要屏蔽的IP地址] - 屏蔽来自指定用户的连接";
             HelpTexts[5] = "load [插件名称] - 初始化指定插件";
             HelpTexts[6] = "reload - 重新加载所有插件";
-            HelpTexts[7] = "(未完成)[自定义方法名称] [自定义参数] - 调用插件执行命令";
+            HelpTexts[7] = "[自定义方法名称] [自定义参数] - 调用插件执行命令";
             switch(Cmds[0])
             {
                 case "help":
@@ -93,7 +92,7 @@ namespace SudoItApi
                     Plugins.InitializatePlugins();
                     return "Keep";
                 default:
-                    Log.SaveLog("无效命令.执行help以获取帮助");
+                    Plugins.ProcessCommand(Cmds[0], Command);
                     return "Keep";
             }
         }
