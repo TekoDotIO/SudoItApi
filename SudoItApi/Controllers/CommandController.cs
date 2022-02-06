@@ -26,7 +26,7 @@ namespace SudoItApi.Controllers
             {
                 Log.SaveLog(ip + " 执行了命令 \"" + Command + "\"");
                 string result = Cmd.RunCmd(Command, true);
-                return result;
+                return Plugins.ProcessResult("ExecuteCommand", result);
             }
             else
             {
@@ -49,7 +49,8 @@ namespace SudoItApi.Controllers
             {
                 Log.SaveLog(ip + " 安全执行了 \"" + Command + "\"");
                 Cmd.RunCmd(Command, false);
-                return "{\"status\":\"OK\",\"msg\":\"Done.\"}";
+                string result = "{\"status\":\"OK\",\"msg\":\"Done.\"}";
+                return Plugins.ProcessResult("SafeExecute", result);
             }
             else
             {

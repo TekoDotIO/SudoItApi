@@ -42,7 +42,7 @@ namespace SudoItApi.Controllers
                         Dictionary = Dictionary + "\n\"" + Name + "\":\"" + Pid + "\",";
                     }
                     Dictionary = Dictionary[0..^1] + "\n}";
-                    return Dictionary;//返回词典
+                    return Plugins.ProcessResult("GetProcesses", Dictionary);//返回词典
                 }
                 int ExecutedNum = 0;//已执行次数
                 int ToNum = Convert.ToInt32(Num);//每页个数
@@ -265,7 +265,7 @@ namespace SudoItApi.Controllers
                             Dictionary = Dictionary + "\n\"" + Pid + "\",";
                         }
                         Dictionary = Dictionary[0..^1] + "\n}";
-                        return Dictionary;//返回词典
+                        return Plugins.ProcessResult("GetPid", Dictionary);//返回词典
                     }
                     int ExecutedNum = 0;//已执行次数
                     int ToNum = Convert.ToInt32(Num);//每页个数

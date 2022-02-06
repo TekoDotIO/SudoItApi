@@ -17,7 +17,7 @@ namespace SudoItApi
         public static bool Auth(string Password, string ip)
         {
             Directory.CreateDirectory("./Setting/banips/");
-            if(!File.Exists("./Setting/banips/" + ip + ".txt")) File.Create("./Setting/banips/" + ip + ".txt").Close();
+            File.WriteAllText("./Setting/banips/" + ip + ".txt", "0");
             if (File.ReadAllText("./Setting/banips/" + ip + ".txt") == File.ReadAllText("./Setting/ErrTimes.txt")) 
             {
                 Log.SaveLog(ip + "因为输入错误密码次数过多已被屏蔽.如需解除,请执行unban " + ip);

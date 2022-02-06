@@ -39,7 +39,7 @@ namespace SudoItApi.Controllers
                 }
                 Dictionary = Dictionary[0..^1];
                 Dictionary += "\n]";
-                return Dictionary;
+                return Plugins.ProcessResult("GetDrives", Dictionary);
             }
             catch (Exception ex)
             {
@@ -88,7 +88,7 @@ namespace SudoItApi.Controllers
                 {
                     Dictionary = "{\n\"..\":\"Back\",\n" + Dictionary[0..^2];
                     Dictionary += "\n}";
-                    return Dictionary;
+                    return Plugins.ProcessResult("GetList", Dictionary);
                 }
                 string[] Base = Dictionary.Split("\n");
                 int ExecutedNum = 0;//已执行次数
@@ -112,7 +112,7 @@ namespace SudoItApi.Controllers
                 }
                 result = "{\n\"..\":\"Back\",\n" + result[0..^2];
                 result += "\n}";//去除末尾","并加上终止符
-                return result;
+                return Plugins.ProcessResult("GetList", result);
             }
             catch (Exception ex)
             {
@@ -141,7 +141,8 @@ namespace SudoItApi.Controllers
             {
                 System.IO.File.Create(Path);
                 Log.SaveLog(ip + " 创建了以下路径的文件:" + Path);
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("MkFile",result);
             }
             catch (Exception ex)
             {
@@ -169,7 +170,8 @@ namespace SudoItApi.Controllers
             {
                 System.IO.File.Move(FromPath, ToPath);
                 Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"移动到\"" + ToPath + "\".");
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("MoveFile", result);
             }
             catch (Exception ex)
             {
@@ -196,7 +198,8 @@ namespace SudoItApi.Controllers
             {
                 System.IO.File.Delete(Path);
                 Log.SaveLog(ip + " 删除了以下路径的文件:" + Path);
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("DeleteFile", result);
             }
             catch (Exception ex)
             {
@@ -224,7 +227,8 @@ namespace SudoItApi.Controllers
             {
                 System.IO.File.Copy(FromPath, ToPath);
                 Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"复制到\"" + ToPath + "\".");
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("CopyFile", result);
             }
             catch (Exception ex)
             {
@@ -279,7 +283,7 @@ namespace SudoItApi.Controllers
             try
             {
                 Log.SaveLog(ip + " 读取了以下路径的文件:" + Path);
-                return System.IO.File.ReadAllText(Path);
+                return Plugins.ProcessResult("ReadFile", System.IO.File.ReadAllText(Path));
             }
             catch (Exception ex)
             {
@@ -307,7 +311,8 @@ namespace SudoItApi.Controllers
             {
                 Log.SaveLog(ip + " 覆盖了以下路径的文件:" + Path);
                 System.IO.File.WriteAllText(Path, Text);
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("WriteFile", result);
             }
             catch (Exception ex)
             {
@@ -335,7 +340,8 @@ namespace SudoItApi.Controllers
             {
                 Log.SaveLog(ip + " 写入了以下路径的文件:" + Path);
                 System.IO.File.AppendAllText(Path, Text);
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("WriteToFile", result);
             }
             catch (Exception ex)
             {
@@ -343,35 +349,35 @@ namespace SudoItApi.Controllers
                 return "{\"status\":\"Exception\",\"msg\":\"无法写入该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
-        /// <summary>
-        /// 压缩文件
-        /// </summary>
-        /// <param name="FromPath">起始路径</param>
-        /// <param name="ToPath">目的路径</param>
-        /// <param name="Password">密码</param>
-        /// <param name="Type">格式</param>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult<string> ZipFile(string FromPath, string ToPath, string Password, string Type)
-        {
-            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password, ip))
-            {
-                Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"以" + Type + "压缩到\"" + ToPath + "\" ,但是他/她输入了错误的密码");
-                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
-            }
-            try
-            {
-                SevenZipApi.ZipFiles(FromPath, ToPath, Type);
-                Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"以" + Type + "压缩到\"" + ToPath + "\".");
-                return "{\"status\":\"Success.\"}";
-            }
-            catch (Exception ex)
-            {
-                Log.SaveLog("在处理位于" + ip + "的压缩文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Exception\",\"msg\":\"无法压缩该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
-            }
-        }
+        ///// <summary>
+        ///// 压缩文件
+        ///// </summary>
+        ///// <param name="FromPath">起始路径</param>
+        ///// <param name="ToPath">目的路径</param>
+        ///// <param name="Password">密码</param>
+        ///// <param name="Type">格式</param>
+        ///// <returns></returns>
+        //[HttpGet]
+        //public ActionResult<string> ZipFile(string FromPath, string ToPath, string Password, string Type)
+        //{
+        //    string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        //    if (!SetAndAuth.Auth(Password, ip))
+        //    {
+        //        Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"以" + Type + "压缩到\"" + ToPath + "\" ,但是他/她输入了错误的密码");
+        //        return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
+        //    }
+        //    try
+        //    {
+        //        SevenZipApi.ZipFiles(FromPath, ToPath, Type);
+        //        Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"以" + Type + "压缩到\"" + ToPath + "\".");
+        //        return "{\"status\":\"Success.\"}";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.SaveLog("在处理位于" + ip + "的压缩文件请求时发生了异常:" + ex.ToString());
+        //        return "{\"status\":\"Exception\",\"msg\":\"无法压缩该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
+        //    }
+        //}
         /// <summary>
         /// 下载文件
         /// </summary>
@@ -420,7 +426,8 @@ namespace SudoItApi.Controllers
                 Log.SaveLog(ip + " 重命名了以下路径的文件:" + Path);
                 string Dir = System.IO.Path.GetDirectoryName(Path);
                 System.IO.File.Move(Path, Dir + "\\" + Name);
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("RenameFile", result);
             }
             catch (Exception ex)
             {
@@ -449,7 +456,8 @@ namespace SudoItApi.Controllers
             {
                 Directory.CreateDirectory(Path);
                 Log.SaveLog(ip + " 创建了以下路径的文件夹:" + Path);
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("MkDir", result);
             }
             catch (Exception ex)
             {
@@ -477,7 +485,8 @@ namespace SudoItApi.Controllers
             {
                 Directory.Move(FromPath, ToPath);
                 Log.SaveLog(ip + " 尝试将该路径的文件夹: \"" + FromPath + "\"移动到\"" + ToPath + "\".");
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("MoveDir", result);
             }
             catch (Exception ex)
             {
@@ -504,7 +513,8 @@ namespace SudoItApi.Controllers
             {
                 Directory.Delete(Path);
                 Log.SaveLog(ip + " 删除了以下路径的文件夹:" + Path);
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("DeleteDir", result);
             }
             catch (Exception ex)
             {
@@ -532,7 +542,8 @@ namespace SudoItApi.Controllers
             {
                 CopyFolder(FromPath, ToPath);
                 Log.SaveLog(ip + " 尝试将该路径的文件夹: \"" + FromPath + "\"复制到\"" + ToPath + "\".");
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("CopyDir", result);
             }
             catch (Exception ex)
             {
@@ -563,7 +574,7 @@ namespace SudoItApi.Controllers
                 string LastAccessTime = Directory.GetLastAccessTime(Path).ToString("yyyy-MM-dd-HH:mm:ss");
                 string LastWriteTime = Directory.GetLastWriteTime(Path).ToString("yyyy-MM-dd-HH:mm:ss");
                 string root = Directory.GetDirectoryRoot(Path).Replace("\\", "/");
-                return "{\"CreationTime\":\"" + CreationTime + "\",\"Parent\":\"" + Parent + "\",\"LastAccess\":\"" + LastAccessTime + "\",\"LastWrite\":\"" + LastWriteTime + "\",\"Root\":\"" + root + "\"}";
+                return Plugins.ProcessResult("GetDirInfo", "{\"CreationTime\":\"" + CreationTime + "\",\"Parent\":\"" + Parent + "\",\"LastAccess\":\"" + LastAccessTime + "\",\"LastWrite\":\"" + LastWriteTime + "\",\"Root\":\"" + root + "\"}");
             }
             catch (Exception ex)
             {
@@ -571,35 +582,35 @@ namespace SudoItApi.Controllers
                 return "{\"status\":\"Exception\",\"msg\":\"无法获取该文件夹信息.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
             }
         }
-        /// <summary>
-        /// 压缩文件
-        /// </summary>
-        /// <param name="FromPath">起始路径</param>
-        /// <param name="ToPath">目的路径</param>
-        /// <param name="Password">密码</param>
-        /// <param name="Type">目标格式</param>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult<string> ZipDir(string FromPath, string ToPath, string Password, string Type)
-        {
-            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-            if (!SetAndAuth.Auth(Password, ip))
-            {
-                Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"以" + Type + "压缩到\"" + ToPath + "\" ,但是他/她输入了错误的密码");
-                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
-            }
-            try
-            {
-                SevenZipApi.ZipDir(FromPath, ToPath, Type);
-                Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"以" + Type + "压缩到\"" + ToPath + "\".");
-                return "{\"status\":\"Success.\"}";
-            }
-            catch (Exception ex)
-            {
-                Log.SaveLog("在处理位于" + ip + "的压缩文件请求时发生了异常:" + ex.ToString());
-                return "{\"status\":\"Exception\",\"msg\":\"无法压缩该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
-            }
-        }
+        ///// <summary>
+        ///// 压缩文件
+        ///// </summary>
+        ///// <param name="FromPath">起始路径</param>
+        ///// <param name="ToPath">目的路径</param>
+        ///// <param name="Password">密码</param>
+        ///// <param name="Type">目标格式</param>
+        ///// <returns></returns>
+        //[HttpGet]
+        //public ActionResult<string> ZipDir(string FromPath, string ToPath, string Password, string Type)
+        //{
+        //    string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        //    if (!SetAndAuth.Auth(Password, ip))
+        //    {
+        //        Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"以" + Type + "压缩到\"" + ToPath + "\" ,但是他/她输入了错误的密码");
+        //        return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
+        //    }
+        //    try
+        //    {
+        //        SevenZipApi.ZipDir(FromPath, ToPath, Type);
+        //        Log.SaveLog(ip + " 尝试将该路径的文件: \"" + FromPath + "\"以" + Type + "压缩到\"" + ToPath + "\".");
+        //        return "{\"status\":\"Success.\"}";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.SaveLog("在处理位于" + ip + "的压缩文件请求时发生了异常:" + ex.ToString());
+        //        return "{\"status\":\"Exception\",\"msg\":\"无法压缩该文件.请检查路径名称是否正确,是否以正确的用户账户运行服务端及是否具有该路径的访问权限.\",\"exception\":\"" + ex.Message + "\"}"; ;
+        //    }
+        //}
         /// <summary>
         /// 复制文件夹及文件
         /// </summary>
@@ -651,7 +662,8 @@ namespace SudoItApi.Controllers
                 Log.SaveLog(ip + " 重命名了以下路径的文件夹:" + Path);
                 string Dir = System.IO.Path.GetDirectoryName(Path);
                 Directory.Move(Path, Dir + "\\" + Name);
-                return "{\"status\":\"Success.\"}";
+                string result = "{\"status\":\"Success.\"}";
+                return Plugins.ProcessResult("RenameDir", result);
             }
             catch (Exception ex)
             {
@@ -696,8 +708,8 @@ namespace SudoItApi.Controllers
                     return WriteFile(obj.Path, obj.Password, obj.Text);
                 case "WriteToFile"://以Text中的内容写入到文件末尾
                     return WriteToFile(obj.Path, obj.Password, obj.Text);
-                case "ZipFile"://压缩文件
-                    return ZipFile(obj.FromPath, obj.ToPath, obj.Password, obj.Type);
+                //case "ZipFile"://压缩文件
+                //    return ZipFile(obj.FromPath, obj.ToPath, obj.Password, obj.Type);
                 case "DownloadFile"://获取远程文件(已弃用)
                     return "{\"status\":\"Error\",\"msg\":\"Please use PostDownload metgod to download file.\"}";
                 case "RenameFile"://重命名文件
@@ -714,8 +726,8 @@ namespace SudoItApi.Controllers
                     return CopyDir(obj.FromPath, obj.ToPath, obj.Password);
                 case "GetDirInfo"://获取文件夹信息
                     return GetDirInfo(obj.Path, obj.Password);
-                case "ZipDir"://压缩整个目录
-                    return ZipDir(obj.FromPath, obj.ToPath, obj.Password, obj.Type);
+                //case "ZipDir"://压缩整个目录
+                //    return ZipDir(obj.FromPath, obj.ToPath, obj.Password, obj.Type);
                 case "RenameDir"://重命名目录
                     return RenameDir(obj.Path, obj.Password, obj.Name);
                 #endregion

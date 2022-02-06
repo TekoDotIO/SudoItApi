@@ -51,7 +51,7 @@ namespace SudoItApi.Controllers
                     case "FALSE":
                         PluginProcess.Start();
                         Log.SaveLog("插件方法" + Method + "成功被调用,参数:" + Args);
-                        return "{\"status\":\"OK\",\"msg\":\"成功调用\"}";
+                        return Plugins.ProcessResult("Plugin.Get." + Method, "{\"status\":\"OK\",\"msg\":\"成功调用\"}");
                     case "True":
                     case "1":
                     case "true":
@@ -66,7 +66,7 @@ namespace SudoItApi.Controllers
                         Log.SaveLog("插件方法" + Method + "成功被调用,参数:" + Args);
                         Log.SaveLog("插件返回给用户的信息:" + Outputs[0]);
                         Log.SaveLog("插件返回给控制台的信息:" + Outputs[1]);
-                        return "{\"status\":\"OK\",\"msg\":\"" + Output + "\"}";
+                        return Plugins.ProcessResult("Plugin.Get." + Method, Output);
                     default:
                         return "{\"status\":\"Error\",\"msg\":\"未指定的是否获取返回值.\"}";
                 }
@@ -114,7 +114,7 @@ namespace SudoItApi.Controllers
                     case "FALSE":
                         PluginProcess.Start();
                         Log.SaveLog("插件方法" + obj.Method + "成功被调用,参数:" + obj.Args);
-                        return "{\"status\":\"OK\",\"msg\":\"成功调用\"}";
+                        return Plugins.ProcessResult("Plugin.Post." + obj.Method, "{\"status\":\"OK\",\"msg\":\"成功调用\"}");
                     case "True":
                     case "1":
                     case "true":
@@ -129,7 +129,7 @@ namespace SudoItApi.Controllers
                         Log.SaveLog("插件方法" + obj.Method + "成功被调用,参数:" + obj.Args);
                         Log.SaveLog("插件返回给用户的信息:" + Outputs[0]);
                         Log.SaveLog("插件返回给控制台的信息:" + Outputs[1]);
-                        return "{\"status\":\"OK\",\"msg\":\"" + Output + "\"}";
+                        return Plugins.ProcessResult("Plugin.Post." + obj.Method, Output);
                     default:
                         return "{\"status\":\"Error\",\"msg\":\"未指定的是否获取返回值.\"}";
                 }
