@@ -264,7 +264,7 @@ namespace SudoItApi.Controllers
                             string Pid = process.Id.ToString();
                             Dictionary = Dictionary + "\n\"" + Pid + "\",";
                         }
-                        Dictionary = Dictionary[0..^1] + "\n}";
+                        Dictionary = Dictionary[0..^1] + "\n]";
                         return Plugins.ProcessResult("GetPid", Dictionary);//返回词典
                     }
                     int ExecutedNum = 0;//已执行次数
@@ -281,7 +281,7 @@ namespace SudoItApi.Controllers
                         }
                         ExecutedNum++;//次数+1
                     }
-                    Dictionary = Dictionary[0..^1] + "\n}";//去除末尾","并添加终止符
+                    Dictionary = Dictionary[0..^1] + "\n]";//去除末尾","并添加终止符
                     return Plugins.ProcessResult("GetPid", Dictionary);//返回词典
                 }
                 catch (Exception ex)
