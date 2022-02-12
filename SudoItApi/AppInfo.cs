@@ -24,7 +24,7 @@
         /// <summary>
         /// 更新日志
         /// </summary>
-        public static string UpdateLog = "-修复了进程类GetPids时词典格式不正确的问题\n-增加了插件类GetMethods,PostMethods等方法,可获取所有额外方法.";
+        public static string UpdateLog = "-修复了进程类GetPids时词典格式不正确的问题\n-增加了插件类GetMethods,PostMethods等方法,可获取所有额外方法.\n-插件类新增更多方法,并支持POST调用";
     }
     /// <summary>
     /// 用户信息类(定制)

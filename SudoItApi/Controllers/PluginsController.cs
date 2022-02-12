@@ -74,7 +74,7 @@ namespace SudoItApi.Controllers
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password, ip))
             {
-                Log.SaveLog(ip + " 尝试获取所有GET插件 ,但是他/她输入了错误的密码.");
+                Log.SaveLog(ip + " 尝试获取所有POST插件 ,但是他/她输入了错误的密码.");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
             }
             try
@@ -124,7 +124,7 @@ namespace SudoItApi.Controllers
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password, ip))
             {
-                Log.SaveLog(ip + " 尝试获取所有GET插件 ,但是他/她输入了错误的密码.");
+                Log.SaveLog(ip + " 尝试获取所有修改器插件 ,但是他/她输入了错误的密码.");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
             }
             try
@@ -174,7 +174,7 @@ namespace SudoItApi.Controllers
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password, ip))
             {
-                Log.SaveLog(ip + " 尝试获取所有GET插件 ,但是他/她输入了错误的密码.");
+                Log.SaveLog(ip + " 尝试获取所有命令行插件 ,但是他/她输入了错误的密码.");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
             }
             try
@@ -224,7 +224,7 @@ namespace SudoItApi.Controllers
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password, ip))
             {
-                Log.SaveLog(ip + " 尝试获取所有GET插件 ,但是他/她输入了错误的密码.");
+                Log.SaveLog(ip + " 尝试获取所有插件 ,但是他/她输入了错误的密码.");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
             }
             try
@@ -274,24 +274,43 @@ namespace SudoItApi.Controllers
             string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             if (!SetAndAuth.Auth(Password, ip))
             {
-                Log.SaveLog(ip + " 尝试获取所有GET插件 ,但是他/她输入了错误的密码.");
+                Log.SaveLog(ip + " 尝试获取指定插件:\"" + Method + "\",\"" + Path + "\" ,但是他/她输入了错误的密码.");
                 return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
             }
             try
             {
-                switch (Path)
+                return Path switch
                 {
-                    case "GET-Methods":
-                        break;
-                    case "POST-Methods":
-                        break;
-                    case "InsideProcessor":
-                        break;
-                    case "CommandProcessor":
-                        break;
-                    default:
-                        return "{\"status\":\"Exception\",\"msg\":\"请指定Path,它应为GET-Methods,POST-Methods,InsideProcessor或CommandProcessor\"}";
-                }
+                    "GET-Methods" => Plugins.ProcessResult("GetPointedPlugins", "{\"status\":\"OK\",\"info\":\"" + System.IO.File.ReadAllText("./Plugins/GET-Methods/" + Method + ".txt") + "\"}"),
+                    "POST-Methods" => Plugins.ProcessResult("GetPointedPlugins", "{\"status\":\"OK\",\"info\":\"" + System.IO.File.ReadAllText("./Plugins/POST-Methods/" + Method + ".txt") + "\"}"),
+                    "InsideProcessor" => Plugins.ProcessResult("GetPointedPlugins", "{\"status\":\"OK\",\"info\":\"" + System.IO.File.ReadAllText("./Plugins/InsideProcessor/" + Method + ".txt") + "\"}"),
+                    "CommandProcessor" => Plugins.ProcessResult("GetPointedPlugins", "{\"status\":\"OK\",\"info\":\"" + System.IO.File.ReadAllText("./Plugins/CommandProcessor/" + Method + ".txt") + "\"}"),
+                    _ => "{\"status\":\"Exception\",\"msg\":\"请指定Path,它应为GET-Methods,POST-Methods,InsideProcessor或CommandProcessor\"}",
+                };
+            }
+            catch (Exception ex)
+            {
+                return "{\"status\":\"Exception\",\"msg\":\"运行插件时出错.可能原因:1.名称输入有误,导致调用错插件;2.权限不够,请尝试提权后运行.\",\"exception\":\"" + ex.Message + "\"}";
+            }
+        }
+        /// <summary>
+        /// 初始化所有可执行插件
+        /// </summary>
+        /// <param name="Password">密码</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult<string> Initializate(string Password)
+        {
+            string ip = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            if (!SetAndAuth.Auth(Password, ip))
+            {
+                Log.SaveLog(ip + " 尝试初始化所有插件 ,但是他/她输入了错误的密码.");
+                return "{\"status\":\"Error\",\"msg\":\"密码不正确.Password is not correct.\"}";
+            }
+            try
+            {
+                Plugins.InitializatePlugins();
+                return "{\"status\":\"OK\"}";
             }
             catch (Exception ex)
             {
@@ -429,6 +448,25 @@ namespace SudoItApi.Controllers
             }
         }
         /// <summary>
+        /// 以POST方法调用插件模块
+        /// </summary>
+        /// <param name="obj">JSON对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<string> PostApi([FromBody] Json obj)
+        {
+            return obj.Operation switch
+            {
+                "GetMethods" => GetMethods(obj.Password, obj.Num, obj.Page),
+                "PostMethods" => PostMethods(obj.Password, obj.Num, obj.Page),
+                "InsideProcessorMethods" => InsideProcessorMethods(obj.Password, obj.Num, obj.Page),
+                "CommandProcessorMethods" => CommandProcessorMethods(obj.Password, obj.Num, obj.Page),
+                "GetAllPlugins" => GetAllPlugins(obj.Password, obj.Num, obj.Page),
+                "GetPointedPlugins" => GetPointedPlugins(obj.Password, obj.Method, obj.Path),
+                _ => "{\"status\":\"Error\",\"msg\":\"Operation或方法不存在.请检查拼写与方法是否有误.\"}",
+            };
+        }
+        /// <summary>
         /// Json对象
         /// </summary>
         public class Json
@@ -449,6 +487,22 @@ namespace SudoItApi.Controllers
             /// 是否等待返回值
             /// </summary>
             public string WaitForResult { get; set; }
+            /// <summary>
+            /// 操作
+            /// </summary>
+            public string Operation { get; set; }
+            /// <summary>
+            /// 每页项目个数
+            /// </summary>
+            public string Num { get; set; }
+            /// <summary>
+            /// 页码
+            /// </summary>
+            public string Page { get; set; }
+            /// <summary>
+            /// 操作路径
+            /// </summary>
+            public string Path { get; set; }
         }
     }
 }
