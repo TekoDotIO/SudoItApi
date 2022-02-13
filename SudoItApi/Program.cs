@@ -72,7 +72,7 @@ namespace SudoItApi
             {
                 Thread.Sleep(3000);
                 Log.SaveLog("MVC控制器进入守护状态,命令模式已启动");
-                Log.SaveLog("输入Help以获取命令帮助!");
+                Log.SaveLog("输入help以获取命令帮助!");
                 return ReadCommand();
             }
         }

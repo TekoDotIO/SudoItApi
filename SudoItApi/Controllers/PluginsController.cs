@@ -371,7 +371,7 @@ namespace SudoItApi.Controllers
                         Log.SaveLog("插件方法" + Method + "成功被调用,参数:" + Args);
                         Log.SaveLog("插件返回给用户的信息:" + Outputs[0]);
                         Log.SaveLog("插件返回给控制台的信息:" + Outputs[1]);
-                        return Plugins.ProcessResult("Plugin.Get." + Method, Output);
+                        return Plugins.ProcessResult("Plugin.Get." + Method, Outputs[0]);
                     default:
                         return "{\"status\":\"Error\",\"msg\":\"未指定的是否获取返回值.\"}";
                 }
@@ -435,7 +435,7 @@ namespace SudoItApi.Controllers
                         Log.SaveLog("插件方法" + obj.Method + "成功被调用,参数:" + obj.Args);
                         Log.SaveLog("插件返回给用户的信息:" + Outputs[0]);
                         Log.SaveLog("插件返回给控制台的信息:" + Outputs[1]);
-                        return Plugins.ProcessResult("Plugin.Post." + obj.Method, Output);
+                        return Plugins.ProcessResult("Plugin.Post." + obj.Method, Outputs[0]);
                     default:
                         return "{\"status\":\"Error\",\"msg\":\"未指定的是否获取返回值.\"}";
                 }

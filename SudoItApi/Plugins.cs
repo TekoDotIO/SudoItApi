@@ -63,10 +63,10 @@ namespace SudoItApi
             Directory.CreateDirectory("./Plugins/GET-Methods/");//只需GET数据的自定义方法
             Directory.CreateDirectory("./Plugins/InsideProcessor/");//对内部方法结果进行修改的方法
             Directory.CreateDirectory("./Plugins/CommandProcessor/");//命令处理器方法
-            string[] POSTs = Directory.GetDirectories("./Plugins/POST-Methods/");
-            string[] GETs = Directory.GetDirectories("./Plugins/GET-Methods/");
-            string[] INSIDEs = Directory.GetDirectories("./Plugins/InsideProcessor/");
-            string[] CMDs = Directory.GetDirectories("./Plugins/CommandProcessor/");
+            string[] POSTs = PostApis();
+            string[] GETs = GetApis();
+            string[] INSIDEs = InsideApis();
+            string[] CMDs = CommandApis();
             string POST_Methods = "", GET_Methods = "", Inside_Methods = "", Command_Methods = "";
             foreach (string Method in POSTs)
             {
@@ -202,9 +202,9 @@ namespace SudoItApi
         /// </summary>
         /// <param name="Method">方法</param>
         /// <param name="Args">参数</param>
-        public static void ProcessCommand(string Method,string Args)
+        public static void ProcessCommand(string Method, string Args)
         {
-            if (!System.IO.File.Exists("./Plugins/GET-Methods/" + Method + ".txt"))
+            if (!System.IO.File.Exists("./Plugins/CommandProcessor/" + Method + ".txt"))
             {
                 Log.SaveLog("无效命令且不存在的插件方法:" + Method);
                 return;

@@ -12,7 +12,7 @@
         /// <summary>
         /// 版本号
         /// </summary>
-        public static string Version = "v.1.0.1.1";
+        public static string Version = "v.1.0.1.2";
         /// <summary>
         /// 内部版本
         /// </summary>
@@ -24,7 +24,7 @@
         /// <summary>
         /// 更新日志
         /// </summary>
-        public static string UpdateLog = "-修复了进程类GetPids时词典格式不正确的问题\n-增加了插件类GetMethods,PostMethods等方法,可获取所有额外方法.\n-插件类新增更多方法,并支持POST调用";
+        public static string UpdateLog = "-修复了插件列表不显示的问题\n-修复了命令插件却进入GET插件目录查找的问题\n-修正了Help命令的大小写争议\n-日志间距重新缩小为一行\n-修复了GET与POST插件返回值为两行的问题";
     }
     /// <summary>
     /// 用户信息类(定制)

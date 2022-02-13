@@ -26,6 +26,14 @@ namespace SudoItApi
             HelpTexts[5] = "load [插件名称] - 初始化指定插件";
             HelpTexts[6] = "reload - 重新加载所有插件";
             HelpTexts[7] = "[自定义方法名称] [自定义参数] - 调用插件执行命令";
+            try
+            {
+                string Cmd0 = Cmds[0];//如果不测试,Ctrl+C会抛异常.
+            }
+            catch
+            {
+                return "";
+            }
             switch(Cmds[0])
             {
                 case "help":

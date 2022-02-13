@@ -21,7 +21,7 @@ namespace SudoItApi
             File.AppendAllText(@"./Log/Console" + DateTime.Now.ToString("yyyy-MM-dd") + ".log", "\r\n" + message);
             //AppendAllTexe是追加到文件末尾.因为文件名不能出现"/",所以这里在ToString里面指定格式为yyyy-MM-dd.
             //为了使文件便于查找,因此一天一个文件
-            Console.WriteLine(message + "\n");
+            Console.WriteLine(message);
             //同时将信息反馈到控制台
             //return;
         }
