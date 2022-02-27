@@ -93,7 +93,7 @@ namespace SudoItApi
                     }
                     catch
                     {
-                        Log.SaveLog("插件" + Cmds[1] + "无法加载,原因可能是没有找到插件或权限不够");
+                        Log.SaveLog("插件无法加载,原因可能是没有找到插件或权限不够");
                         return "Keep";
                     }
                 case "reload":

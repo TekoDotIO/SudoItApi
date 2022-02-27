@@ -139,7 +139,7 @@ namespace SudoItApi.Controllers
             }
             try
             {
-                System.IO.File.Create(Path);
+                System.IO.File.Create(Path).Close();
                 Log.SaveLog(ip + " 创建了以下路径的文件:" + Path);
                 string result = "{\"status\":\"Success.\"}";
                 return Plugins.ProcessResult("MkFile",result);

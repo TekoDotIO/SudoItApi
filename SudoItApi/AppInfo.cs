@@ -12,11 +12,11 @@
         /// <summary>
         /// 版本号
         /// </summary>
-        public static string Version = "v.1.0.1.2";
+        public static string Version = "v.1.0.1.3";
         /// <summary>
         /// 内部版本
         /// </summary>
-        public static string InsideVersion = "Release I";
+        public static string InsideVersion = "Beta II";
         /// <summary>
         /// 版权信息
         /// </summary>
@@ -24,7 +24,7 @@
         /// <summary>
         /// 更新日志
         /// </summary>
-        public static string UpdateLog = "-修复了插件列表不显示的问题\n-修复了命令插件却进入GET插件目录查找的问题\n-修正了Help命令的大小写争议\n-日志间距重新缩小为一行\n-修复了GET与POST插件返回值为两行的问题";
+        public static string UpdateLog = "-修复了shutdown与stop命令不起作用的问题\n-修复load命令不带参数时执行异常导致程序崩溃的问题\n-修复不延时执行NextValue导致CPU读数始终为0%的问题";
     }
     /// <summary>
     /// 用户信息类(定制)

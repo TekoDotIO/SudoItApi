@@ -52,7 +52,7 @@ namespace SudoItApi
                     break;
                 case "shutdown":
                     MvcThread.Interrupt();
-                    break;
+                    return;
                 default:
                     ReadCommand(true);
                     break;

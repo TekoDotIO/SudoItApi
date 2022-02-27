@@ -24,6 +24,7 @@ namespace SudoItApi.Controllers
             cpuCounter.NextValue();//获取下一结果
             //ramCounter = new PerformanceCounter("Memory", "Available MBytes");
             //PerformanceCounter diskCounter = new PerformanceCounter("PhysicalDisk", "Disk Read Bytes/sec", "_Total");
+            Thread.Sleep(100);
             return cpuCounter.NextValue() + "%";
             //这里注意!一定要获取两次NextValue
             //因为NextValue指的是上一次和这一次检查的平均值,因此第一次结果为0%
